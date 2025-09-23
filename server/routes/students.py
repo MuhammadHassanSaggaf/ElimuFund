@@ -1,7 +1,7 @@
 # server/routes/student_routes.py
 from flask import Blueprint, request, jsonify, session
-from models import db, User, StudentProfile
-from utils.decorators import login_required, student_required
+from ..models import db, User, StudentProfile
+from ..utils.decorators import login_required, student_required
 from sqlalchemy import func
 
 student_bp = Blueprint('students', __name__, url_prefix='/api')
