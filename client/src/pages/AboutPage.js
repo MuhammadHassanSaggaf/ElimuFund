@@ -3,54 +3,111 @@ import React from "react";
 const AboutPage = () => {
   return (
     <div className="about-page">
-      <div className="container">
-        <h1>About ElimuFund</h1>
-        <div className="about-content">
-          <section className="mission">
-            <h2>Our Mission</h2>
-            <p>
-              ElimuFund is dedicated to making quality education accessible to all students, 
-              regardless of their financial background. We connect generous donors with 
-              students who need educational support to achieve their academic dreams.
-            </p>
-          </section>
-          
-          <section className="how-it-works">
-            <h2>How It Works</h2>
-            <div className="steps">
-              <div className="step">
-                <h3>1. Students Apply</h3>
-                <p>Students create profiles and submit their educational funding needs.</p>
-              </div>
-              <div className="step">
-                <h3>2. Donors Browse</h3>
-                <p>Donors explore student profiles and choose who to support.</p>
-              </div>
-              <div className="step">
-                <h3>3. Direct Impact</h3>
-                <p>Funds go directly to educational expenses, creating real change.</p>
-              </div>
-            </div>
-          </section>
-
-          <section className="impact">
-            <h2>Our Impact</h2>
-            <div className="stats">
-              <div className="stat">
-                <h3>500+</h3>
-                <p>Students Supported</p>
-              </div>
-              <div className="stat">
-                <h3>$250K+</h3>
-                <p>Funds Raised</p>
-              </div>
-              <div className="stat">
-                <h3>95%</h3>
-                <p>Success Rate</p>
-              </div>
-            </div>
-          </section>
+      {/* Hero Section */}
+      <div className="about-hero">
+        <div className="hero-content">
+          <h1>Transforming Lives Through Education</h1>
+          <p>Bridging the gap between dreams and reality, one student at a time</p>
         </div>
+        <div className="hero-visual">
+          <div className="floating-elements">
+            <div className="element graduation">🎓</div>
+            <div className="element book">📚</div>
+            <div className="element lightbulb">💡</div>
+            <div className="element heart">❤️</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        {/* Mission Section */}
+        <section className="mission-section">
+          <div className="section-header">
+            <h2>Our Mission</h2>
+            <div className="underline"></div>
+          </div>
+          <div className="mission-content">
+            <div className="mission-text">
+              <p className="lead">
+                ElimuFund exists to democratize education by creating transparent, 
+                direct connections between students in need and compassionate donors worldwide.
+              </p>
+              <p>
+                We believe that financial barriers should never prevent brilliant minds 
+                from achieving their educational goals. Through our platform, we've 
+                revolutionized how educational funding works - making it transparent, 
+                accountable, and impactful.
+              </p>
+            </div>
+            <div className="mission-visual">
+              <div className="circle-stats">
+                <div className="circle">
+                  <span className="number">100%</span>
+                  <span className="label">Transparent</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Impact Statistics */}
+        <section className="impact-section">
+          <div className="section-header">
+            <h2>Our Global Impact</h2>
+            <div className="underline"></div>
+          </div>
+          <div className="impact-grid">
+            <div className="impact-card">
+              <div className="impact-icon">🎓</div>
+              <div className="impact-number">2,500+</div>
+              <div className="impact-label">Students Funded</div>
+              <div className="impact-description">Across 45 countries worldwide</div>
+            </div>
+            <div className="impact-card">
+              <div className="impact-icon">💵</div>
+              <div className="impact-number">$2.8M+</div>
+              <div className="impact-label">Total Raised</div>
+              <div className="impact-description">In educational funding</div>
+            </div>
+            <div className="impact-card">
+              <div className="impact-icon">🏆</div>
+              <div className="impact-number">98%</div>
+              <div className="impact-label">Success Rate</div>
+              <div className="impact-description">Students completing programs</div>
+            </div>
+            <div className="impact-card">
+              <div className="impact-icon">🌍</div>
+              <div className="impact-number">15,000+</div>
+              <div className="impact-label">Active Donors</div>
+              <div className="impact-description">Making dreams possible</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Values Section */}
+        <section className="values-section">
+          <div className="section-header">
+            <h2>Our Core Values</h2>
+            <div className="underline"></div>
+          </div>
+          <div className="values-grid">
+            <div className="value-card">
+              <div className="value-icon">🔒</div>
+              <h3>Transparency</h3>
+              <p>Every donation is tracked and reported with complete visibility into fund usage.</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon">🤝</div>
+              <h3>Trust</h3>
+              <p>All students are verified through rigorous background checks and academic validation.</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon">⚡</div>
+              <h3>Impact</h3>
+              <p>We measure success by the lives transformed and communities uplifted through education.</p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
