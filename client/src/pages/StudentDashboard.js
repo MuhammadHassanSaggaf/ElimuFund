@@ -12,60 +12,75 @@ const StudentDashboard = () => {
   const [studentData, setStudentData] = useState(null);
   const [campaignData, setCampaignData] = useState(null);
   const [donations, setDonations] = useState([]);
-  
+
   // Get live campaign data from localStorage
   useEffect(() => {
     if (user?.name) {
-      const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
-      const userCampaign = allStudents.find(s => s.full_name === user.name);
+      const allStudents = JSON.parse(localStorage.getItem("students") || "[]");
+      const userCampaign = allStudents.find((s) => s.full_name === user.name);
       if (userCampaign) {
         setCampaignData(userCampaign);
         setProfileComplete(true);
-        
+
         // Load donation history (mock data for now)
         const mockDonations = [
-          { id: 1, donor: 'Anonymous', amount: 5000, date: new Date().toISOString() },
-          { id: 2, donor: 'John Doe', amount: 3000, date: new Date(Date.now() - 86400000).toISOString() }
+          {
+            id: 1,
+            donor: "Anonymous",
+            amount: 5000,
+            date: new Date().toISOString(),
+          },
+          {
+            id: 2,
+            donor: "John Doe",
+            amount: 3000,
+            date: new Date(Date.now() - 86400000).toISOString(),
+          },
         ];
         setDonations(mockDonations);
       }
     }
   }, [user]);
-  
+
   const totalRaised = campaignData?.amount_raised || 0;
   const supportersCount = campaignData?.supporters_count || 0;
-  
+
   // Calculate progress percentage
-  const progressPercentage = studentData?.fundingNeeded ? 
-    Math.round((totalRaised / studentData.fundingNeeded) * 100) : 0;
+  const progressPercentage = studentData?.fundingNeeded
+    ? Math.round((totalRaised / studentData.fundingNeeded) * 100)
+    : 0;
 
   const handleProfileSubmit = (values) => {
     setStudentData(values);
     setProfileComplete(true);
-    
+
     // Automatically add student to campaigns
     const newStudent = {
       id: Date.now(),
-      full_name: user?.name || 'Student',
+      full_name: user?.name || "Student",
       academic_level: values?.yearOfStudy || values?.educationLevel,
       school_name: values?.institution,
       fee_amount: Number(values?.fundingNeeded) || 0,
       amount_raised: 0,
       supporters_count: 0,
-      story: values?.personalStatement || '',
-      profile_image: values?.profileImage || null
+      story: values?.personalStatement || "",
+      profile_image: values?.profileImage || null,
     };
-    
-    const existingStudents = JSON.parse(localStorage.getItem('students') || '[]');
+
+    const existingStudents = JSON.parse(
+      localStorage.getItem("students") || "[]"
+    );
     // Check if student already exists
-    const studentExists = existingStudents.some(s => s.full_name === user?.name);
-    
+    const studentExists = existingStudents.some(
+      (s) => s.full_name === user?.name
+    );
+
     if (!studentExists) {
       existingStudents.push(newStudent);
-      localStorage.setItem('students', JSON.stringify(existingStudents));
-      
+      localStorage.setItem("students", JSON.stringify(existingStudents));
+
       // Trigger storage event to refresh campaigns page
-      window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new Event("storage"));
     }
   };
 
@@ -87,25 +102,36 @@ const StudentDashboard = () => {
             <p>Track your campaign progress and manage your profile</p>
           </div>
           <div className="header-actions">
-            <button 
+            <button
               className="edit-btn"
               onClick={() => setProfileComplete(false)}
             >
               ✏️ Edit Profile
             </button>
-            <button 
+            <button
               className="delete-btn"
               onClick={() => {
-                if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (
+                  window.confirm(
+                    "Are you sure you want to delete your account? This action cannot be undone."
+                  )
+                ) {
                   // Remove user's campaign from localStorage
-                  const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
-                  const updatedStudents = allStudents.filter(s => s.full_name !== user?.name);
-                  localStorage.setItem('students', JSON.stringify(updatedStudents));
-                  
+                  const allStudents = JSON.parse(
+                    localStorage.getItem("students") || "[]"
+                  );
+                  const updatedStudents = allStudents.filter(
+                    (s) => s.full_name !== user?.name
+                  );
+                  localStorage.setItem(
+                    "students",
+                    JSON.stringify(updatedStudents)
+                  );
+
                   // Clear user session and redirect
-                  localStorage.removeItem('user');
-                  alert('Account deleted successfully');
-                  window.location.href = '/';
+                  localStorage.removeItem("user");
+                  alert("Account deleted successfully");
+                  window.location.href = "/";
                 }
               }}
             >
@@ -143,7 +169,10 @@ const StudentDashboard = () => {
               <h3>{progressPercentage}%</h3>
               <p>Progress</p>
               <div className="progress-bar-mini">
-                <div className="progress-fill-mini" style={{width: `${progressPercentage}%`}}></div>
+                <div
+                  className="progress-fill-mini"
+                  style={{ width: `${progressPercentage}%` }}
+                ></div>
               </div>
             </div>
           </div>
@@ -190,18 +219,20 @@ const StudentDashboard = () => {
                 Your campaign is being reviewed. This usually takes 24-48 hours.
               </p>
               <div className="campaign-actions">
-                <button 
+                <button
                   className="submit-campaign-btn"
                   onClick={() => {
                     if (campaignData?.id) {
                       navigate(`/campaign/${campaignData.id}`);
                     } else {
-                      alert('Campaign is now live!');
-                      setTimeout(() => navigate('/campaigns'), 1000);
+                      alert("Campaign is now live!");
+                      setTimeout(() => navigate("/campaigns"), 1000);
                     }
                   }}
                 >
-                  {campaignData?.id ? '👁️ View My Campaign' : '🚀 Make Campaign Live'}
+                  {campaignData?.id
+                    ? "👁️ View My Campaign"
+                    : "🚀 Make Campaign Live"}
                 </button>
               </div>
             </div>
@@ -214,14 +245,24 @@ const StudentDashboard = () => {
             </div>
             <div className="donations-content">
               {donations.length === 0 ? (
-                <p style={{textAlign: 'center', color: '#666', padding: '20px'}}>No donations yet</p>
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#666",
+                    padding: "20px",
+                  }}
+                >
+                  No donations yet
+                </p>
               ) : (
                 <div className="donations-list">
-                  {donations.map(donation => (
+                  {donations.map((donation) => (
                     <div key={donation.id} className="donation-item">
                       <div className="donation-info">
                         <span className="donor-name">👥 {donation.donor}</span>
-                        <span className="donation-amount">💰 KSh {donation.amount.toLocaleString()}</span>
+                        <span className="donation-amount">
+                          💰 KSh {donation.amount.toLocaleString()}
+                        </span>
                       </div>
                       <div className="donation-date">
                         📅 {new Date(donation.date).toLocaleDateString()}
@@ -233,7 +274,7 @@ const StudentDashboard = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Notifications Section */}
         <div className="dashboard-card notifications-card">
           <NotificationSystem userId={user?.id} />
