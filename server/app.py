@@ -8,10 +8,10 @@ from models import db
 import os
 
 # Import routes (we'll create these next)
-from routes.auth_routes import auth_bp
-from routes.student_routes import student_bp
-from routes.donation_routes import donation_bp
-from routes.admin_routes import admin_bp
+from routes.auth import auth_bp
+from routes.students import student_bp
+from routes.donations import donation_bp
+from routes.admin import admin_bp
 
 def create_app():
     app = Flask(__name__)
