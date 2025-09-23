@@ -30,35 +30,44 @@ const SignupForm = () => {
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
       // Check if email already exists
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      const emailExists = existingUsers.some(user => user.email === values.email);
-      
+      const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      const emailExists = existingUsers.some(
+        (user) => user.email === values.email
+      );
+
       if (emailExists) {
-        setFieldError('email', 'An account with this email already exists. Please log in instead.');
+        setFieldError(
+          "email",
+          "An account with this email already exists. Please log in instead."
+        );
         setSubmitting(false);
         return;
       }
-      
-      console.log('Form submitted with values:', values);
-      
+
+      console.log("Form submitted with values:", values);
+
       // Save user to localStorage
       const newUser = {
         id: Date.now(),
         email: values.email,
         name: values.fullName,
         role: values.userType,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       existingUsers.push(newUser);
-      localStorage.setItem('users', JSON.stringify(existingUsers));
-      
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Login user
-      login({ email: values.email, role: values.userType, name: values.fullName });
-      
+      login({
+        email: values.email,
+        role: values.userType,
+        name: values.fullName,
+      });
+
       // Navigate based on user type
       if (values.userType === "student") {
         navigate("/student-dashboard");
@@ -67,7 +76,7 @@ const SignupForm = () => {
       }
     } catch (error) {
       console.error("Signup failed:", error);
-      setFieldError('email', 'Signup failed. Please try again.');
+      setFieldError("email", "Signup failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -119,19 +128,21 @@ const SignupForm = () => {
               <div className="password-input-group">
                 <div className="password-input-wrapper">
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     name={field.name}
                     placeholder="Password"
                     value={field.value}
                     onChange={field.onChange}
-                    className={`form-input ${meta.touched && meta.error ? 'error' : ''}`}
+                    className={`form-input ${
+                      meta.touched && meta.error ? "error" : ""
+                    }`}
                   />
                   <button
                     type="button"
                     className="password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? '🙈' : '👁️'}
+                    {showPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
                 {meta.touched && meta.error && (
@@ -147,19 +158,21 @@ const SignupForm = () => {
               <div className="password-input-group">
                 <div className="password-input-wrapper">
                   <input
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     name={field.name}
                     placeholder="Confirm Password"
                     value={field.value}
                     onChange={field.onChange}
-                    className={`form-input ${meta.touched && meta.error ? 'error' : ''}`}
+                    className={`form-input ${
+                      meta.touched && meta.error ? "error" : ""
+                    }`}
                   />
                   <button
                     type="button"
                     className="password-toggle"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? '🙈' : '👁️'}
+                    {showConfirmPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
                 {meta.touched && meta.error && (
@@ -184,8 +197,7 @@ const SignupForm = () => {
         <div className="terms-agreement">
           <label className="checkbox-label">
             <Field type="checkbox" name="agreeToTerms" />
-            <span className="checkmark"></span>
-            I agree to the{" "}
+            <span className="checkmark"></span>I agree to the{" "}
             <a href="/terms" target="_blank" rel="noopener noreferrer">
               Terms & Conditions
             </a>{" "}
