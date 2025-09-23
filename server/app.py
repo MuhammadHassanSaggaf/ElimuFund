@@ -23,10 +23,10 @@ def create_app():
     
     # Configure CORS - CRITICAL for frontend connection
     CORS(app, 
-         resources={r"/api/*": {"origins": "http://localhost:3000"}},
-         supports_credentials=True,
-         allow_headers=["Content-Type"],
-         methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
+        resources={r"/api/*": {"origins": "http://localhost:3000"}},
+        supports_credentials=True,
+        allow_headers=["Content-Type"],
+        methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
     
     # Register blueprints
     app.register_blueprint(auth_bp)
