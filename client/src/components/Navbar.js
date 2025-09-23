@@ -1,9 +1,10 @@
 import React from "react";
+// this is my branch
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="navbar">
@@ -14,7 +15,13 @@ const Navbar = () => {
         </Link>
         <div className="navbar-links">
           <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/campaigns" className="nav-link">
             Campaigns
+          </Link>
+          <Link to="/about" className="nav-link">
+            About
           </Link>
           {!isAuthenticated ? (
             <>
@@ -27,7 +34,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/donor-dashboard" className="nav-link">
+              <Link 
+                to={user?.role === "student" ? "/student-dashboard" : "/donor-dashboard"} 
+                className="nav-link"
+              >
                 Dashboard
               </Link>
               <button onClick={logout} className="nav-link logout-btn">
