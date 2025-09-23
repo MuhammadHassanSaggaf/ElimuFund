@@ -1,7 +1,8 @@
 import React from "react";
 
 const ProgressBar = ({ percentage, className = "" }) => {
-  const clampedPercentage = Math.min(100, Math.max(0, percentage));
+  const validPercentage = typeof percentage === 'number' && !isNaN(percentage) ? percentage : 0;
+  const clampedPercentage = Math.min(100, Math.max(0, validPercentage));
 
   return (
     <div className={`progress-bar-container ${className}`}>
