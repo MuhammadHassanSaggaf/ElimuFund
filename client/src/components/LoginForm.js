@@ -17,9 +17,17 @@ const LoginForm = () => {
 
   const handleSubmit = (values) => {
     console.log("Login submitted:", values);
-    // TODO: Connect to backend API
-    login({ email: values.email, role: "donor" });
-    navigate("/donor-dashboard");
+    // TODO: Connect to backend API - determine user role from response
+    const userRole = "donor"; // This should come from backend
+    login({ email: values.email, role: userRole });
+    
+    if (userRole === "student") {
+      navigate("/student-dashboard");
+    } else if (userRole === "admin") {
+      navigate("/admin-dashboard");
+    } else {
+      navigate("/donor-dashboard");
+    }
   };
 
   return (

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="navbar">
@@ -16,6 +16,9 @@ const Navbar = () => {
           <Link to="/" className="nav-link">
             Campaigns
           </Link>
+          <Link to="/about" className="nav-link">
+            About
+          </Link>
           {!isAuthenticated ? (
             <>
               <Link to="/login" className="nav-link">
@@ -27,7 +30,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/donor-dashboard" className="nav-link">
+              <Link 
+                to={user?.role === "student" ? "/student-dashboard" : "/donor-dashboard"} 
+                className="nav-link"
+              >
                 Dashboard
               </Link>
               <button onClick={logout} className="nav-link logout-btn">

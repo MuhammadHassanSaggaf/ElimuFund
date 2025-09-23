@@ -1,8 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useAuth } from "../context/AuthContext";
 
 const SignupForm = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
     fullName: Yup.string().required("Full name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,6 +25,13 @@ const SignupForm = () => {
   const handleSubmit = (values) => {
     console.log("Signup submitted:", values);
     // TODO: Connect to backend API
+    login({ email: values.email, role: values.userType, name: values.fullName });
+    
+    if (values.userType === "student") {
+      navigate("/student-dashboard");
+    } else {
+      navigate("/donor-dashboard");
+    }
   };
 
   return (
