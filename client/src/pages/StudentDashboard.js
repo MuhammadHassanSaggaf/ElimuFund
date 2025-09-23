@@ -8,7 +8,6 @@ const StudentDashboard = () => {
   const [studentData, setStudentData] = useState(null);
 
   const handleProfileSubmit = (values) => {
-    console.log("Student profile submitted:", values);
     // TODO: Connect to backend API
     setStudentData(values);
     setProfileComplete(true);
@@ -76,8 +75,18 @@ const StudentDashboard = () => {
           </div>
 
           <div className="actions">
-            <button className="btn-primary">Edit Profile</button>
-            <button className="btn-secondary">Share Campaign</button>
+            <button 
+              className="btn-primary"
+              onClick={() => setProfileComplete(false)}
+            >
+              Edit Profile
+            </button>
+            <button 
+              className="btn-secondary"
+              onClick={() => navigator.share ? navigator.share({title: 'Support My Education', url: window.location.href}) : alert('Share feature not supported')}
+            >
+              Share Campaign
+            </button>
           </div>
         </div>
       </div>

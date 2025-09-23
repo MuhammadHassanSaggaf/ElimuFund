@@ -17,7 +17,9 @@ const DonationForm = ({ student }) => {
   };
 
   const suggestedAmounts = [1000, 2500, 5000, 10000];
-  const remainingAmount = student.fee_amount - student.amount_raised;
+  const remainingAmount = student?.fee_amount && student?.amount_raised 
+    ? student.fee_amount - student.amount_raised 
+    : 0;
 
   return (
     <div className="donation-form-container">
@@ -37,7 +39,7 @@ const DonationForm = ({ student }) => {
                   key={amount}
                   type="button"
                   className={`amount-btn ${
-                    values.amount == amount ? "selected" : ""
+                    Number(values.amount) === amount ? "selected" : ""
                   }`}
                   onClick={() => setFieldValue("amount", amount)}
                 >

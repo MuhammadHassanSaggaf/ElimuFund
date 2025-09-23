@@ -86,6 +86,8 @@ const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
             name="fundingNeeded"
             placeholder="Funding Amount Needed ($)"
             className="form-input"
+            min="0"
+            step="0.01"
           />
           <ErrorMessage name="fundingNeeded" component="div" className="error-message" />
         </div>

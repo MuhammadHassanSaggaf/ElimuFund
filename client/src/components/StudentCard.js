@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 
 const StudentCard = ({ student }) => {
-  const progressPercentage = (student.amount_raised / student.fee_amount) * 100;
-  const truncatedStory =
-    student.story.length > 150
-      ? student.story.substring(0, 150) + "..."
-      : student.story;
+  const progressPercentage = student?.fee_amount > 0 
+    ? (student.amount_raised / student.fee_amount) * 100 
+    : 0;
+  const truncatedStory = student?.story && student.story.length > 150
+    ? student.story.substring(0, 150) + "..."
+    : student?.story || "No story available";
 
   return (
     <div className="student-card">

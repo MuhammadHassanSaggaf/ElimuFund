@@ -22,15 +22,19 @@ const SignupForm = () => {
       .required("User type is required"),
   });
 
-  const handleSubmit = (values) => {
-    console.log("Signup submitted:", values);
-    // TODO: Connect to backend API
-    login({ email: values.email, role: values.userType, name: values.fullName });
-    
-    if (values.userType === "student") {
-      navigate("/student-dashboard");
-    } else {
-      navigate("/donor-dashboard");
+  const handleSubmit = async (values) => {
+    try {
+      // TODO: Connect to backend API
+      login({ email: values.email, role: values.userType, name: values.fullName });
+      
+      if (values.userType === "student") {
+        navigate("/student-dashboard");
+      } else {
+        navigate("/donor-dashboard");
+      }
+    } catch (error) {
+      // Handle signup error
+      console.error("Signup failed:", error.message);
     }
   };
 
