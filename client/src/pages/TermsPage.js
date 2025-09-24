@@ -151,7 +151,7 @@ const TermsPage = () => {
         </div>
 
         <div className="terms-footer">
-          <p className="last-updated"> Last updated: January 2024</p>
+          <p className="last-updated"> Last updated: September 2025</p>
           <p className="contact-info">
             Questions? Contact us at{" "}
             <a href="mailto:legal@elimufund.org">legal@elimufund.org</a>
