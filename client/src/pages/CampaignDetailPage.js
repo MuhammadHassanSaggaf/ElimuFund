@@ -2,9 +2,11 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import DonationForm from "../components/DonationForm";
 import ProgressBar from "../components/ProgressBar";
+import { useAuth } from "../context/AuthContext";
 
 const CampaignDetailPage = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   
   // Get students from localStorage only
   const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
@@ -62,7 +64,7 @@ const CampaignDetailPage = () => {
                     </div>
                     <div className="stat">
                       <span className="stat-value">{Math.round(progressPercentage)}%</span>
-                      <span className="stat-label">Complete</span>
+                      <span className="stat-label">{Math.round(progressPercentage) === 100 ? 'Complete' : 'Incomplete'}</span>
                     </div>
                   </div>
                 </div>
@@ -72,14 +74,6 @@ const CampaignDetailPage = () => {
                 <div className="progress-card">
                   <ProgressBar percentage={progressPercentage} className="large" />
                   <div className="progress-details">
-                    <div className="progress-text">
-                      <span className="raised-amount">
-                        KSh {amountRaised.toLocaleString()} raised
-                      </span>
-                      <span className="goal-amount">
-                        of KSh {goalAmount.toLocaleString()} goal
-                      </span>
-                    </div>
                     <div className="supporters-count">
                       <span className="supporters-icon">👥</span>
                       <span>{student.supporters_count || 0} supporters</span>
@@ -149,27 +143,44 @@ const CampaignDetailPage = () => {
               </div>
             </div>
 
-            {/* Donation Section */}
-            <div className="donation-section">
-              <div className="donation-sticky">
-                <DonationForm student={student} />
-                
-                <div className="trust-indicators">
-                  <div className="trust-item">
-                    <span className="trust-icon">🔒</span>
-                    <span>Secure & Encrypted</span>
-                  </div>
-                  <div className="trust-item">
-                    <span className="trust-icon">✅</span>
-                    <span>Verified Student</span>
-                  </div>
-                  <div className="trust-item">
-                    <span className="trust-icon">📊</span>
-                    <span>Progress Tracking</span>
+            {/* Donation Section - Only show if not the student's own campaign */}
+            {user?.name !== student.full_name && (
+              <div className="donation-section">
+                <div className="donation-sticky">
+                  <DonationForm student={student} />
+                  
+                  <div className="trust-indicators">
+                    <div className="trust-item">
+                      <span className="trust-icon">🔒</span>
+                      <span>Secure & Encrypted</span>
+                    </div>
+                    <div className="trust-item">
+                      <span className="trust-icon">✅</span>
+                      <span>Verified Student</span>
+                    </div>
+                    <div className="trust-item">
+                      <span className="trust-icon">📊</span>
+                      <span>Progress Tracking</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+            
+            {/* Student's own campaign message */}
+            {user?.name === student.full_name && (
+              <div className="own-campaign-message">
+                <div className="message-card">
+                  <h3>📊 Your Campaign Dashboard</h3>
+                  <p>This is your campaign page. Share this link with potential donors to receive support!</p>
+                  <div className="share-actions">
+                    <button className="share-btn" onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                      📋 Copy Link to Share
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

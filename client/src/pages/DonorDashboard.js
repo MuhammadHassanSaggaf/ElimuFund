@@ -36,17 +36,17 @@ const DonorDashboard = () => {
       </div>
 
       <div className="dashboard-stats">
-        <div className="stat-card">
-          <h3>Students Needing Help</h3>
-          <p className="stat-number">{studentsNeedingHelp.length}</p>
+        <div className="stat-card" style={{background: '#F5F5DC', border: '2px solid #DEB887'}}>
+          <h3 style={{color: '#654321', fontWeight: '600'}}>Students Needing Help</h3>
+          <p className="stat-number" style={{color: '#8B4513', fontWeight: '800'}}>{studentsNeedingHelp.length}</p>
         </div>
-        <div className="stat-card">
-          <h3>Total Students</h3>
-          <p className="stat-number">{totalStudents}</p>
+        <div className="stat-card" style={{background: '#F5F5DC', border: '2px solid #DEB887'}}>
+          <h3 style={{color: '#654321', fontWeight: '600'}}>Total Students</h3>
+          <p className="stat-number" style={{color: '#8B4513', fontWeight: '800'}}>{totalStudents}</p>
         </div>
-        <div className="stat-card">
-          <h3>Funding Needed</h3>
-          <p className="stat-number">KSh {totalFundingNeeded.toLocaleString()}</p>
+        <div className="stat-card" style={{background: '#F5F5DC', border: '2px solid #DEB887'}}>
+          <h3 style={{color: '#654321', fontWeight: '600'}}>Funding Needed</h3>
+          <p className="stat-number" style={{color: '#8B4513', fontWeight: '800'}}>KSh {totalFundingNeeded.toLocaleString()}</p>
         </div>
       </div>
 

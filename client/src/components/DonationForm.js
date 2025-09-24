@@ -91,10 +91,10 @@ const DonationForm = ({ student }) => {
     
     setDonationSuccess(true);
     
-    // Refresh the page to show updated amounts
+    // Keep thank you message visible for longer
     setTimeout(() => {
       window.location.reload();
-    }, 3000);
+    }, 8000);
   };
   
   const handleTransfer = (selectedStudent) => {
@@ -220,10 +220,6 @@ const DonationForm = ({ student }) => {
             <div className="funding-progress">
               <div className="progress-bar">
                 <div className="progress-fill" style={{width: `${Math.min(100, ((student?.amount_raised || 0) / (student?.fee_amount || 1)) * 100)}%`}}></div>
-              </div>
-              <div className="progress-text">
-                <span className="raised">KSh {(student?.amount_raised || 0).toLocaleString()} raised</span>
-                <span className="goal">of KSh {(student?.fee_amount || 0).toLocaleString()} goal</span>
               </div>
             </div>
           )}

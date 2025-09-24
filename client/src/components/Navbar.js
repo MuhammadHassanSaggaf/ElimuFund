@@ -1,10 +1,16 @@
 import React from "react";
 // this is my branch
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <nav className="navbar">
@@ -40,7 +46,7 @@ const Navbar = () => {
               >
                 Dashboard
               </Link>
-              <button onClick={logout} className="nav-link logout-btn">
+              <button onClick={handleLogout} className="nav-link logout-btn">
                 Logout
               </button>
             </>

@@ -159,19 +159,19 @@ const StudentDashboard = () => {
             <div className="profile-details">
               <div className="detail-item">
                 <span className="label">🏫 Institution:</span>
-                <span className="value">{studentData?.institution}</span>
+                <span className="value">{campaignData?.school_name || studentData?.institution || 'Not specified'}</span>
               </div>
               <div className="detail-item">
                 <span className="label">📚 Course:</span>
-                <span className="value">{studentData?.course}</span>
+                <span className="value">{campaignData?.course || studentData?.course || 'Not specified'}</span>
               </div>
               <div className="detail-item">
                 <span className="label">📅 Year:</span>
-                <span className="value">{studentData?.yearOfStudy}</span>
+                <span className="value">{campaignData?.academic_level || studentData?.yearOfStudy || 'Not specified'}</span>
               </div>
               <div className="detail-item">
                 <span className="label">🎯 Purpose:</span>
-                <span className="value">{studentData?.purpose}</span>
+                <span className="value">{campaignData?.purpose || studentData?.purpose || 'Educational funding'}</span>
               </div>
             </div>
           </div>
