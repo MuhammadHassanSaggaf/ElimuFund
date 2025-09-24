@@ -1,4 +1,5 @@
 // API service for connecting to Flask backend
+// Use CRA proxy in development to keep cookies same-origin
 const API_BASE_URL = process.env.REACT_APP_API_URL || "/api";
 
 class ApiService {
@@ -131,9 +132,64 @@ class ApiService {
 		});
 	}
 
+	// Admin endpoints
+	async getAdminStats() {
+		return this.request("/admin/dashboard-stats");
+	}
+
+	async getPendingStudents() {
+		return this.request("/admin/students/pending");
+	}
+
+	async verifyStudent(id, action = "approve") {
+		return this.request(`/admin/students/${id}/verify`, {
+			method: "PATCH",
+			body: JSON.stringify({ action }),
+		});
+	}
+
+	async getAllDonations() {
+		return this.request("/admin/donations");
+	}
+
+	async getAllUsers() {
+		return this.request("/admin/users");
+	}
+
 	// Test endpoint
 	async testConnection() {
 		return this.request("/test");
+	}
+
+	// Utility methods for data transformation
+	transformStudentData(apiStudent) {
+		return {
+			id: apiStudent.id,
+			full_name: apiStudent.full_name,
+			academic_level: apiStudent.academic_level,
+			school_name: apiStudent.school_name,
+			fee_amount: apiStudent.fee_amount,
+			amount_raised: apiStudent.amount_raised,
+			story: apiStudent.story,
+			profile_image: apiStudent.profile_image,
+			is_verified: apiStudent.is_verified,
+			supporters_count: apiStudent.total_donors || 0,
+			percentage_raised: apiStudent.percentage_raised || 0,
+			remaining_amount: apiStudent.remaining_amount || 0,
+			created_at: apiStudent.created_at,
+			user_id: apiStudent.user_id,
+		};
+	}
+
+	transformUserData(apiUser) {
+		return {
+			id: apiUser.id,
+			username: apiUser.username,
+			email: apiUser.email,
+			role: apiUser.role,
+			name: apiUser.username, // For compatibility with existing code
+			created_at: apiUser.created_at,
+		};
 	}
 }
 
