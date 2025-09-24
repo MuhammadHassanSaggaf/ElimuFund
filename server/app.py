@@ -3,15 +3,23 @@ from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
-from .config import Config
-from .models import db
 import os
 
-# Import routes (we'll create these next)
-from .routes.auth import auth_bp
-from .routes.students import student_bp
-from .routes.donations import donation_bp
-from .routes.admin import admin_bp
+# Support both package and script run modes for imports
+try:
+    from .config import Config
+    from .models import db
+    from .routes.auth import auth_bp
+    from .routes.students import student_bp
+    from .routes.donations import donation_bp
+    from .routes.admin import admin_bp
+except ImportError:
+    from config import Config
+    from models import db
+    from routes.auth import auth_bp
+    from routes.students import student_bp
+    from routes.donations import donation_bp
+    from routes.admin import admin_bp
 
 def create_app():
     app = Flask(__name__)

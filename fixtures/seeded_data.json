@@ -1,0 +1,405 @@
+{
+  "created_at": "2025-09-24T22:39:22.071667",
+  "records": {
+    "users": [
+      {
+        "id": 29,
+        "email": "donor9@example.com",
+        "username": "Daniel Stevens",
+        "role": "donor"
+      },
+      {
+        "id": 30,
+        "email": "donor10@example.com",
+        "username": "Christian Andersen",
+        "role": "donor"
+      },
+      {
+        "id": 31,
+        "email": "donor11@example.com",
+        "username": "Marissa Floyd",
+        "role": "donor"
+      },
+      {
+        "id": 32,
+        "email": "donor12@example.com",
+        "username": "Courtney Baldwin",
+        "role": "donor"
+      },
+      {
+        "id": 33,
+        "email": "donor13@example.com",
+        "username": "Richard Bailey",
+        "role": "donor"
+      },
+      {
+        "id": 34,
+        "email": "donor14@example.com",
+        "username": "Miss Julie Hoover",
+        "role": "donor"
+      },
+      {
+        "id": 35,
+        "email": "donor15@example.com",
+        "username": "Kristi Carter",
+        "role": "donor"
+      },
+      {
+        "id": 36,
+        "email": "donor16@example.com",
+        "username": "Joseph Maldonado",
+        "role": "donor"
+      },
+      {
+        "id": 37,
+        "email": "donor17@example.com",
+        "username": "Barbara Moore",
+        "role": "donor"
+      },
+      {
+        "id": 38,
+        "email": "donor18@example.com",
+        "username": "Kristen Howell",
+        "role": "donor"
+      },
+      {
+        "id": 39,
+        "email": "student6@example.com",
+        "username": "Bradley Miller",
+        "role": "student"
+      },
+      {
+        "id": 40,
+        "email": "student7@example.com",
+        "username": "Brandon Elliott",
+        "role": "student"
+      },
+      {
+        "id": 41,
+        "email": "student8@example.com",
+        "username": "James Adams",
+        "role": "student"
+      },
+      {
+        "id": 42,
+        "email": "student9@example.com",
+        "username": "Mr. Xavier Marshall MD",
+        "role": "student"
+      },
+      {
+        "id": 43,
+        "email": "student10@example.com",
+        "username": "Holly Miller",
+        "role": "student"
+      }
+    ],
+    "student_profiles": [
+      {
+        "id": 7,
+        "user_id": 39,
+        "full_name": "Anna Diaz",
+        "school_name": "Alliance Girls High School",
+        "fee_amount": 45000,
+        "is_verified": true
+      },
+      {
+        "id": 8,
+        "user_id": 40,
+        "full_name": "Curtis Reynolds",
+        "school_name": "University of Nairobi",
+        "fee_amount": 25000,
+        "is_verified": true
+      },
+      {
+        "id": 9,
+        "user_id": 41,
+        "full_name": "James Jackson",
+        "school_name": "Mang'u High School",
+        "fee_amount": 35000,
+        "is_verified": true
+      },
+      {
+        "id": 10,
+        "user_id": 42,
+        "full_name": "Chelsea Clark",
+        "school_name": "Alliance Girls High School",
+        "fee_amount": 25000,
+        "is_verified": true
+      },
+      {
+        "id": 11,
+        "user_id": 43,
+        "full_name": "Eric Hughes",
+        "school_name": "Kenyatta University",
+        "fee_amount": 35000,
+        "is_verified": true
+      }
+    ],
+    "donations": [
+      {
+        "id": 22,
+        "donor_id": 38,
+        "student_profile_id": 1,
+        "amount": 2500,
+        "is_anonymous": true
+      },
+      {
+        "id": 23,
+        "donor_id": 10,
+        "student_profile_id": 1,
+        "amount": 1000,
+        "is_anonymous": true
+      },
+      {
+        "id": 24,
+        "donor_id": 38,
+        "student_profile_id": 2,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 25,
+        "donor_id": 38,
+        "student_profile_id": 2,
+        "amount": 5000,
+        "is_anonymous": true
+      },
+      {
+        "id": 26,
+        "donor_id": 30,
+        "student_profile_id": 2,
+        "amount": 5000,
+        "is_anonymous": true
+      },
+      {
+        "id": 27,
+        "donor_id": 17,
+        "student_profile_id": 2,
+        "amount": 10000,
+        "is_anonymous": true
+      },
+      {
+        "id": 28,
+        "donor_id": 13,
+        "student_profile_id": 2,
+        "amount": 2500,
+        "is_anonymous": true
+      },
+      {
+        "id": 29,
+        "donor_id": 30,
+        "student_profile_id": 5,
+        "amount": 10000,
+        "is_anonymous": false
+      },
+      {
+        "id": 30,
+        "donor_id": 32,
+        "student_profile_id": 5,
+        "amount": 5000,
+        "is_anonymous": false
+      },
+      {
+        "id": 31,
+        "donor_id": 18,
+        "student_profile_id": 5,
+        "amount": 10000.0,
+        "is_anonymous": false
+      },
+      {
+        "id": 32,
+        "donor_id": 12,
+        "student_profile_id": 7,
+        "amount": 1000,
+        "is_anonymous": false
+      },
+      {
+        "id": 33,
+        "donor_id": 31,
+        "student_profile_id": 7,
+        "amount": 10000,
+        "is_anonymous": false
+      },
+      {
+        "id": 34,
+        "donor_id": 16,
+        "student_profile_id": 7,
+        "amount": 5000,
+        "is_anonymous": false
+      },
+      {
+        "id": 35,
+        "donor_id": 12,
+        "student_profile_id": 7,
+        "amount": 10000,
+        "is_anonymous": true
+      },
+      {
+        "id": 36,
+        "donor_id": 30,
+        "student_profile_id": 7,
+        "amount": 10000,
+        "is_anonymous": false
+      },
+      {
+        "id": 37,
+        "donor_id": 29,
+        "student_profile_id": 7,
+        "amount": 2500,
+        "is_anonymous": true
+      },
+      {
+        "id": 38,
+        "donor_id": 31,
+        "student_profile_id": 7,
+        "amount": 5000,
+        "is_anonymous": true
+      },
+      {
+        "id": 39,
+        "donor_id": 32,
+        "student_profile_id": 8,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 40,
+        "donor_id": 10,
+        "student_profile_id": 8,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 41,
+        "donor_id": 33,
+        "student_profile_id": 8,
+        "amount": 2500,
+        "is_anonymous": true
+      },
+      {
+        "id": 42,
+        "donor_id": 34,
+        "student_profile_id": 8,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 43,
+        "donor_id": 16,
+        "student_profile_id": 8,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 44,
+        "donor_id": 33,
+        "student_profile_id": 8,
+        "amount": 12500,
+        "is_anonymous": false
+      },
+      {
+        "id": 45,
+        "donor_id": 38,
+        "student_profile_id": 9,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 46,
+        "donor_id": 13,
+        "student_profile_id": 9,
+        "amount": 10000,
+        "is_anonymous": true
+      },
+      {
+        "id": 47,
+        "donor_id": 19,
+        "student_profile_id": 9,
+        "amount": 2500,
+        "is_anonymous": true
+      },
+      {
+        "id": 48,
+        "donor_id": 18,
+        "student_profile_id": 9,
+        "amount": 10000,
+        "is_anonymous": false
+      },
+      {
+        "id": 49,
+        "donor_id": 36,
+        "student_profile_id": 9,
+        "amount": 1000,
+        "is_anonymous": false
+      },
+      {
+        "id": 50,
+        "donor_id": 17,
+        "student_profile_id": 9,
+        "amount": 9000,
+        "is_anonymous": false
+      },
+      {
+        "id": 51,
+        "donor_id": 17,
+        "student_profile_id": 10,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 52,
+        "donor_id": 32,
+        "student_profile_id": 10,
+        "amount": 10000,
+        "is_anonymous": false
+      },
+      {
+        "id": 53,
+        "donor_id": 38,
+        "student_profile_id": 11,
+        "amount": 15000,
+        "is_anonymous": true
+      },
+      {
+        "id": 54,
+        "donor_id": 17,
+        "student_profile_id": 11,
+        "amount": 1000,
+        "is_anonymous": true
+      },
+      {
+        "id": 55,
+        "donor_id": 19,
+        "student_profile_id": 11,
+        "amount": 2500,
+        "is_anonymous": false
+      },
+      {
+        "id": 56,
+        "donor_id": 30,
+        "student_profile_id": 11,
+        "amount": 1000,
+        "is_anonymous": true
+      },
+      {
+        "id": 57,
+        "donor_id": 16,
+        "student_profile_id": 11,
+        "amount": 5000,
+        "is_anonymous": false
+      },
+      {
+        "id": 58,
+        "donor_id": 30,
+        "student_profile_id": 11,
+        "amount": 10500,
+        "is_anonymous": false
+      }
+    ]
+  },
+  "summary": {
+    "total_users": 15,
+    "total_student_profiles": 5,
+    "total_donations": 37
+  }
+}

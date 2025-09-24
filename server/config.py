@@ -17,3 +17,6 @@ class Config:
     # Session config
     SESSION_TYPE = 'filesystem'
     PERMANENT_SESSION_LIFETIME = 86400 
+    # Dev cookie settings for cross-site (proxy preferred, but safe to keep)
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = False
