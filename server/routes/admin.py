@@ -1,7 +1,11 @@
 # server/routes/admin_routes.py
 from flask import Blueprint, request, jsonify, session
-from ..models import db, User, StudentProfile, Donation
-from ..utils.decorators import admin_required
+try:
+    from ..models import db, User, StudentProfile, Donation
+    from ..utils.decorators import admin_required
+except ImportError:
+    from models import db, User, StudentProfile, Donation
+    from utils.decorators import admin_required
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')
 

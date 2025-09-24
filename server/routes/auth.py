@@ -1,6 +1,9 @@
 # server/routes/auth
 from flask import Blueprint, request, jsonify, session
-from models import db, User, StudentProfile
+try:
+    from ..models import db, User, StudentProfile
+except ImportError:
+    from models import db, User, StudentProfile
 from werkzeug.security import generate_password_hash
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api')
