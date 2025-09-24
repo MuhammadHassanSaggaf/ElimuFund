@@ -1,4 +1,5 @@
 import React from "react";
+// this is my branch
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -14,6 +15,9 @@ const Navbar = () => {
         </Link>
         <div className="navbar-links">
           <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/campaigns" className="nav-link">
             Campaigns
           </Link>
           <Link to="/about" className="nav-link">

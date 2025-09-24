@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,6 +7,8 @@ import { useAuth } from "../context/AuthContext";
 const SignupForm = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validationSchema = Yup.object({
     fullName: Yup.string().required("Full name is required"),
@@ -18,23 +20,65 @@ const SignupForm = () => {
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm password is required"),
     userType: Yup.string()
-      .oneOf(["donor", "student"], "Please select a user type")
+      .oneOf(["donor", "student", "admin"], "Please select a user type")
       .required("User type is required"),
+    agreeToTerms: Yup.boolean()
+      .oneOf([true], "You must agree to the Terms & Conditions")
+      .required("You must agree to the Terms & Conditions"),
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // TODO: Connect to backend API
-      login({ email: values.email, role: values.userType, name: values.fullName });
-      
+      // Check if email already exists
+      const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      const emailExists = existingUsers.some(
+        (user) => user.email === values.email
+      );
+
+      if (emailExists) {
+        setFieldError(
+          "email",
+          "An account with this email already exists. Please log in instead."
+        );
+        setSubmitting(false);
+        return;
+      }
+
+      console.log("Form submitted with values:", values);
+
+      // Save user to localStorage
+      const newUser = {
+        id: Date.now(),
+        email: values.email,
+        name: values.fullName,
+        role: values.userType,
+        createdAt: new Date().toISOString(),
+      };
+
+      existingUsers.push(newUser);
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Login user
+      login({
+        email: values.email,
+        role: values.userType,
+        name: values.fullName,
+      });
+
+      // Navigate based on user type
       if (values.userType === "student") {
         navigate("/student-dashboard");
       } else {
         navigate("/donor-dashboard");
       }
     } catch (error) {
-      // Handle signup error
-      console.error("Signup failed:", error.message);
+      console.error("Signup failed:", error);
+      setFieldError("email", "Signup failed. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -46,6 +90,7 @@ const SignupForm = () => {
         password: "",
         confirmPassword: "",
         userType: "donor",
+        agreeToTerms: false,
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -78,38 +123,91 @@ const SignupForm = () => {
           />
         </div>
         <div className="form-group">
-          <Field
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="form-input"
-          />
-          <ErrorMessage
-            name="password"
-            component="div"
-            className="error-message"
-          />
+          <Field name="password">
+            {({ field, meta }) => (
+              <div className="password-input-group">
+                <div className="password-input-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name={field.name}
+                    placeholder="Password"
+                    value={field.value}
+                    onChange={field.onChange}
+                    className={`form-input ${
+                      meta.touched && meta.error ? "error" : ""
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+                {meta.touched && meta.error && (
+                  <span className="error-message">{meta.error}</span>
+                )}
+              </div>
+            )}
+          </Field>
         </div>
         <div className="form-group">
-          <Field
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            className="form-input"
-          />
-          <ErrorMessage
-            name="confirmPassword"
-            component="div"
-            className="error-message"
-          />
+          <Field name="confirmPassword">
+            {({ field, meta }) => (
+              <div className="password-input-group">
+                <div className="password-input-wrapper">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name={field.name}
+                    placeholder="Confirm Password"
+                    value={field.value}
+                    onChange={field.onChange}
+                    className={`form-input ${
+                      meta.touched && meta.error ? "error" : ""
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+                {meta.touched && meta.error && (
+                  <span className="error-message">{meta.error}</span>
+                )}
+              </div>
+            )}
+          </Field>
         </div>
         <div className="form-group">
           <Field as="select" name="userType" className="form-input">
             <option value="donor">I want to donate</option>
             <option value="student">I need educational support</option>
+            <option value="admin">I am an administrator</option>
           </Field>
           <ErrorMessage
             name="userType"
+            component="div"
+            className="error-message"
+          />
+        </div>
+        <div className="terms-agreement">
+          <label className="checkbox-label">
+            <Field type="checkbox" name="agreeToTerms" />
+            <span className="checkmark"></span>I agree to the{" "}
+            <a href="/terms" target="_blank" rel="noopener noreferrer">
+              Terms & Conditions
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer">
+              Privacy Policy
+            </a>
+          </label>
+          <ErrorMessage
+            name="agreeToTerms"
             component="div"
             className="error-message"
           />

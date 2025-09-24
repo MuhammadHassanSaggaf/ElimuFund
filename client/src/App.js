@@ -6,6 +6,11 @@ import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AboutPage from "./pages/AboutPage";
+import HomePage from "./pages/HomePage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import SupportPage from "./pages/SupportPage";
+import FAQPage from "./pages/FAQPage";
+import TermsPage from "./pages/TermsPage";
 import CampaignsPage from "./pages/CampaignsPage";
 import CampaignDetailPage from "./pages/CampaignDetailPage";
 import DonorDashboard from "./pages/DonorDashboard";
@@ -21,8 +26,13 @@ const App = () => {
           <Navbar />
           <main className="main-content">
             <Routes>
-              <Route path="/" element={<CampaignsPage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/campaigns" element={<CampaignsPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/how-it-works" element={<HowItWorksPage />} />
+              <Route path="/contact" element={<SupportPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/terms" element={<TermsPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/campaign/:id" element={<CampaignDetailPage />} />
