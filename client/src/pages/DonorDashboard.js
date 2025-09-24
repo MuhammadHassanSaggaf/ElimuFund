@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProgressBar from "../components/ProgressBar";
 import { useAuth } from "../context/AuthContext";
-import { dummyStudents } from "../data/dummyData";
 
 const DonorDashboard = () => {
   const { user } = useAuth();
   const [allStudents, setAllStudents] = useState([]);
   
   useEffect(() => {
-    const localStudents = JSON.parse(localStorage.getItem('students') || '[]');
-    const storedDummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || JSON.stringify(dummyStudents));
-    const students = [...storedDummyStudents, ...localStudents];
+    const students = JSON.parse(localStorage.getItem('students') || '[]');
     setAllStudents(students);
   }, []);
   
@@ -27,10 +24,6 @@ const DonorDashboard = () => {
         {user?.role === 'admin' && (
           <button 
             onClick={() => {
-              localStorage.removeItem('students');
-              localStorage.removeItem('dummyStudents');
-              localStorage.removeItem('users');
-              localStorage.removeItem('user');
               localStorage.clear();
               alert('All data cleared!');
               window.location.href = '/';
@@ -74,7 +67,6 @@ const DonorDashboard = () => {
                   key={student.id} 
                   to={`/campaign/${student.id}`} 
                   className="student-help-card"
-                  style={{textDecoration: 'none', color: 'inherit', display: 'block', margin: '20px 0', padding: '20px', border: '1px solid #ddd', borderRadius: '10px', cursor: 'pointer'}}
                 >
                   <div className="student-info">
                     <h4>{student.full_name}</h4>
@@ -87,7 +79,7 @@ const DonorDashboard = () => {
                     <p>KSh {amountRaised.toLocaleString()} raised</p>
                     <p>Needs KSh {amountNeeded.toLocaleString()}</p>
                   </div>
-                  <div style={{background: '#007bff', color: 'white', padding: '10px', borderRadius: '5px', textAlign: 'center', marginTop: '10px'}}>
+                  <div className="help-button">
                     💰 Help {student.full_name.split(' ')[0]}
                   </div>
                 </Link>

@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { dummyStudents } from "../data/dummyData";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const CampaignsPage = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
   
   // Refresh data when component becomes visible
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        const localStudents = JSON.parse(localStorage.getItem('students') || '[]');
-        const storedDummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || JSON.stringify(dummyStudents));
-        const allStudents = [...storedDummyStudents, ...localStudents];
+        const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
         setStudents(allStudents);
       }
     };
@@ -27,9 +32,7 @@ const CampaignsPage = () => {
 
   useEffect(() => {
     const loadStudents = () => {
-      const localStudents = JSON.parse(localStorage.getItem('students') || '[]');
-      const storedDummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || JSON.stringify(dummyStudents));
-      const allStudents = [...storedDummyStudents, ...localStudents];
+      const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
       
       // Filter based on user role
       if (user?.role === 'student') {
@@ -51,6 +54,15 @@ const CampaignsPage = () => {
       window.removeEventListener('storage', loadStudents);
     };
   }, [user?.name, user?.role]);
+  
+  // Show loading or redirect message while checking auth
+  if (!user) {
+    return (
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+        <p>Redirecting to login...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="campaigns-page">
@@ -100,7 +112,6 @@ const CampaignsPage = () => {
               key={student.id} 
               to={`/campaign/${student.id}`} 
               className="student-card clickable-card"
-              style={{textDecoration: 'none', color: 'inherit'}}
             >
               <div className="verified-badge"></div>
               <div className="student-header">

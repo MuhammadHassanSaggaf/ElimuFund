@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [allUsers, setAllUsers] = useState([]);
   
   useEffect(() => {
@@ -18,28 +20,8 @@ const AdminDashboard = () => {
         <h1>Admin Dashboard</h1>
         <p>Manage student verifications and fund disbursements</p>
         <button 
-          onClick={() => {
-            const name = prompt('Enter full name:');
-            const email = prompt('Enter email:');
-            const role = prompt('Enter role (student/donor/admin):');
-            
-            if (name && email && role) {
-              const newUser = {
-                id: Date.now(),
-                name,
-                email,
-                role,
-                createdAt: new Date().toISOString()
-              };
-              
-              const users = JSON.parse(localStorage.getItem('users') || '[]');
-              users.push(newUser);
-              localStorage.setItem('users', JSON.stringify(users));
-              
-              alert(`Account created for ${name} as ${role}`);
-            }
-          }}
-          style={{padding: '10px 20px', background: 'green', color: 'white', border: 'none', borderRadius: '5px', marginTop: '10px'}}
+          onClick={() => navigate('/signup')}
+          className="add-account-btn"
         >
           + Add New Account
         </button>

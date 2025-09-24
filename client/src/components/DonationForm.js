@@ -77,7 +77,7 @@ const DonationForm = ({ student }) => {
       
       if (excess > 0) {
         console.log('Showing transfer modal for excess:', excess);
-        const otherStudents = [...updatedStudents, ...updatedDummyStudents]
+        const otherStudents = updatedStudents
           .filter(s => s.id !== student.id && (s.amount_raised || 0) < s.fee_amount);
         
         if (otherStudents.length > 0) {
@@ -107,13 +107,7 @@ const DonationForm = ({ student }) => {
     );
     localStorage.setItem('students', JSON.stringify(updatedStudents));
     
-    const storedDummy = JSON.parse(localStorage.getItem('dummyStudents') || '[]');
-    const updatedDummy = storedDummy.map(s => 
-      s.id === selectedStudent.id 
-        ? { ...s, amount_raised: (s.amount_raised || 0) + excessAmount }
-        : s
-    );
-    localStorage.setItem('dummyStudents', JSON.stringify(updatedDummy));
+
     
     setShowTransferModal(false);
     setDonationSuccess(true);
@@ -130,7 +124,6 @@ const DonationForm = ({ student }) => {
   // If goal already reached, show transfer interface directly
   if (isGoalReached && !showTransferModal) {
     const otherStudents = JSON.parse(localStorage.getItem('students') || '[]')
-      .concat(JSON.parse(localStorage.getItem('dummyStudents') || '[]'))
       .filter(s => s.id !== student.id && (s.amount_raised || 0) < s.fee_amount);
     
     return (
@@ -164,18 +157,7 @@ const DonationForm = ({ student }) => {
                     });
                     localStorage.setItem('students', JSON.stringify(updatedStudents));
                     
-                    const dummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || '[]');
-                    const updatedDummy = dummyStudents.map(st => {
-                      if (st.id === student.id) {
-                        // Reset sender to exactly their goal amount
-                        return { ...st, amount_raised: st.fee_amount };
-                      } else if (st.id === s.id) {
-                        // Add to recipient
-                        return { ...st, amount_raised: (st.amount_raised || 0) + Number(transferAmount) };
-                      }
-                      return st;
-                    });
-                    localStorage.setItem('dummyStudents', JSON.stringify(updatedDummy));
+
                     
                     alert(`✨ KSh ${Number(transferAmount).toLocaleString()} transferred to ${s.full_name}!`);
                     

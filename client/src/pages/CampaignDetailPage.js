@@ -2,15 +2,12 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import DonationForm from "../components/DonationForm";
 import ProgressBar from "../components/ProgressBar";
-import { dummyStudents } from "../data/dummyData";
 
 const CampaignDetailPage = () => {
   const { id } = useParams();
   
-  // Check both dummy students and localStorage students
-  const submittedStudents = JSON.parse(localStorage.getItem('students') || '[]');
-  const storedDummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || JSON.stringify(dummyStudents));
-  const allStudents = [...storedDummyStudents, ...submittedStudents];
+  // Get students from localStorage only
+  const allStudents = JSON.parse(localStorage.getItem('students') || '[]');
   const student = allStudents.find((s) => s.id === parseInt(id));
 
   if (!student) {
@@ -26,7 +23,9 @@ const CampaignDetailPage = () => {
     );
   }
 
-  const progressPercentage = (student.amount_raised / student.fee_amount) * 100;
+  const amountRaised = student.amount_raised || 0;
+  const goalAmount = student.fee_amount || 0;
+  const progressPercentage = goalAmount > 0 ? Math.min(100, (amountRaised / goalAmount) * 100) : 0;
 
   return (
     <div className="modern-campaign-page">
@@ -54,11 +53,11 @@ const CampaignDetailPage = () => {
                   </p>
                   <div className="campaign-stats">
                     <div className="stat">
-                      <span className="stat-value">KSh {student.amount_raised.toLocaleString()}</span>
+                      <span className="stat-value">KSh {amountRaised.toLocaleString()}</span>
                       <span className="stat-label">Raised</span>
                     </div>
                     <div className="stat">
-                      <span className="stat-value">KSh {student.fee_amount.toLocaleString()}</span>
+                      <span className="stat-value">KSh {goalAmount.toLocaleString()}</span>
                       <span className="stat-label">Goal</span>
                     </div>
                     <div className="stat">
@@ -75,10 +74,10 @@ const CampaignDetailPage = () => {
                   <div className="progress-details">
                     <div className="progress-text">
                       <span className="raised-amount">
-                        KSh {student.amount_raised.toLocaleString()} raised
+                        KSh {amountRaised.toLocaleString()} raised
                       </span>
                       <span className="goal-amount">
-                        of KSh {student.fee_amount.toLocaleString()} goal
+                        of KSh {goalAmount.toLocaleString()} goal
                       </span>
                     </div>
                     <div className="supporters-count">
