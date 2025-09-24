@@ -6,10 +6,14 @@ import { dummyStudents } from "../data/dummyData";
 
 const CampaignDetailPage = () => {
   const { id } = useParams();
-  
+
   // Check both dummy students and localStorage students
-  const submittedStudents = JSON.parse(localStorage.getItem('students') || '[]');
-  const storedDummyStudents = JSON.parse(localStorage.getItem('dummyStudents') || JSON.stringify(dummyStudents));
+  const submittedStudents = JSON.parse(
+    localStorage.getItem("students") || "[]"
+  );
+  const storedDummyStudents = JSON.parse(
+    localStorage.getItem("dummyStudents") || JSON.stringify(dummyStudents)
+  );
   const allStudents = [...storedDummyStudents, ...submittedStudents];
   const student = allStudents.find((s) => s.id === parseInt(id));
 
@@ -17,10 +21,12 @@ const CampaignDetailPage = () => {
     return (
       <div className="error-page">
         <div className="error-container">
-          <div className="error-icon">😔</div>
+          <div className="error-icon"></div>
           <h2>Student Not Found</h2>
           <p>The student campaign you're looking for doesn't exist.</p>
-          <a href="/campaigns" className="back-btn">← Back to Campaigns</a>
+          <a href="/campaigns" className="back-btn">
+            ← Back to Campaigns
+          </a>
         </div>
       </div>
     );
@@ -42,7 +48,9 @@ const CampaignDetailPage = () => {
                     <img src={student.profile_image} alt={student.full_name} />
                   ) : (
                     <div className="default-avatar">
-                      <span className="avatar-text">{student.full_name?.charAt(0) || 'S'}</span>
+                      <span className="avatar-text">
+                        {student.full_name?.charAt(0) || "S"}
+                      </span>
                     </div>
                   )}
                   <div className="verified-badge">✓ Verified</div>
@@ -50,28 +58,37 @@ const CampaignDetailPage = () => {
                 <div className="student-details">
                   <h1>{student.full_name}</h1>
                   <p className="student-subtitle">
-                    📚 {student.academic_level} at {student.school_name}
+                    {student.academic_level} at {student.school_name}
                   </p>
                   <div className="campaign-stats">
                     <div className="stat">
-                      <span className="stat-value">KSh {student.amount_raised.toLocaleString()}</span>
+                      <span className="stat-value">
+                        KSh {student.amount_raised.toLocaleString()}
+                      </span>
                       <span className="stat-label">Raised</span>
                     </div>
                     <div className="stat">
-                      <span className="stat-value">KSh {student.fee_amount.toLocaleString()}</span>
+                      <span className="stat-value">
+                        KSh {student.fee_amount.toLocaleString()}
+                      </span>
                       <span className="stat-label">Goal</span>
                     </div>
                     <div className="stat">
-                      <span className="stat-value">{Math.round(progressPercentage)}%</span>
+                      <span className="stat-value">
+                        {Math.round(progressPercentage)}%
+                      </span>
                       <span className="stat-label">Complete</span>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="progress-section">
                 <div className="progress-card">
-                  <ProgressBar percentage={progressPercentage} className="large" />
+                  <ProgressBar
+                    percentage={progressPercentage}
+                    className="large"
+                  />
                   <div className="progress-details">
                     <div className="progress-text">
                       <span className="raised-amount">
@@ -82,7 +99,7 @@ const CampaignDetailPage = () => {
                       </span>
                     </div>
                     <div className="supporters-count">
-                      <span className="supporters-icon">👥</span>
+                      <span className="supporters-icon"></span>
                       <span>{student.supporters_count || 0} supporters</span>
                     </div>
                   </div>
@@ -101,18 +118,18 @@ const CampaignDetailPage = () => {
             <div className="story-section">
               <div className="content-card">
                 <div className="card-header">
-                  <h2>📖 About {student.full_name}</h2>
+                  <h2>About {student.full_name}</h2>
                 </div>
                 <div className="story-content">
                   <p className="story-text">{student.story}</p>
-                  
+
                   {student.grade_reports && (
                     <div className="academic-section">
-                      <h3>📊 Academic Progress</h3>
+                      <h3>Academic Progress</h3>
                       <div className="grade-reports">
                         {student.grade_reports.map((report, index) => (
                           <div key={index} className="grade-item">
-                            <span className="grade-icon">🎯</span>
+                            <span className="grade-icon"></span>
                             <span className="grade-text">{report}</span>
                           </div>
                         ))}
@@ -121,24 +138,24 @@ const CampaignDetailPage = () => {
                   )}
 
                   <div className="impact-section">
-                    <h3>💡 Your Impact</h3>
+                    <h3>Your Impact</h3>
                     <div className="impact-grid">
                       <div className="impact-item">
-                        <div className="impact-icon">📚</div>
+                        <div className="impact-icon"></div>
                         <div className="impact-text">
                           <strong>Education Access</strong>
                           <p>Help provide quality education opportunities</p>
                         </div>
                       </div>
                       <div className="impact-item">
-                        <div className="impact-icon">🚀</div>
+                        <div className="impact-icon"></div>
                         <div className="impact-text">
                           <strong>Future Success</strong>
                           <p>Invest in a bright future and career growth</p>
                         </div>
                       </div>
                       <div className="impact-item">
-                        <div className="impact-icon">🌍</div>
+                        <div className="impact-icon"></div>
                         <div className="impact-text">
                           <strong>Community Impact</strong>
                           <p>Create positive change in the community</p>
@@ -154,18 +171,18 @@ const CampaignDetailPage = () => {
             <div className="donation-section">
               <div className="donation-sticky">
                 <DonationForm student={student} />
-                
+
                 <div className="trust-indicators">
                   <div className="trust-item">
-                    <span className="trust-icon">🔒</span>
+                    <span className="trust-icon"></span>
                     <span>Secure & Encrypted</span>
                   </div>
                   <div className="trust-item">
-                    <span className="trust-icon">✅</span>
+                    <span className="trust-icon"></span>
                     <span>Verified Student</span>
                   </div>
                   <div className="trust-item">
-                    <span className="trust-icon">📊</span>
+                    <span className="trust-icon"></span>
                     <span>Progress Tracking</span>
                   </div>
                 </div>
