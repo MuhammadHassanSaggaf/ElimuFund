@@ -174,7 +174,16 @@ const CampaignDetailPage = () => {
                   <h3>📊 Your Campaign Dashboard</h3>
                   <p>This is your campaign page. Share this link with potential donors to receive support!</p>
                   <div className="share-actions">
-                    <button className="share-btn" onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                    <button 
+                      className="share-btn" 
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href).then(() => {
+                          alert('✅ Link copied to clipboard!');
+                        }).catch(() => {
+                          alert('❌ Failed to copy link');
+                        });
+                      }}
+                    >
                       📋 Copy Link to Share
                     </button>
                   </div>

@@ -343,9 +343,28 @@ const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
               </div>
             </div>
 
-            <button type="submit" className="submit-button">
-              📝 Submit Profile
-            </button>
+            <div className="form-submit-section">
+              <button 
+                type="submit" 
+                className="submit-button"
+                style={{
+                  background: 'linear-gradient(135deg, #8B4513 0%, #654321 100%)',
+                  color: '#FFFFFF',
+                  padding: '16px 32px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '1.1rem',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  width: '100%',
+                  marginTop: '24px',
+                  boxShadow: '0 8px 25px rgba(139, 69, 19, 0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                📝 Submit Profile
+              </button>
+            </div>
           </Form>
         )}}
       </Formik>
