@@ -142,7 +142,7 @@ const SignupForm = () => {
                     className="password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? "🙈" : "👁️"}
+                    {showPassword ? "^" : "-"}
                   </button>
                 </div>
                 {meta.touched && meta.error && (
@@ -172,7 +172,7 @@ const SignupForm = () => {
                     className="password-toggle"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? "🙈" : "👁️"}
+                    {showConfirmPassword ? "^" : "-"}
                   </button>
                 </div>
                 {meta.touched && meta.error && (

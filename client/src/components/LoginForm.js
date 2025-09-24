@@ -9,8 +9,8 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetMessage, setResetMessage] = useState('');
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -22,17 +22,20 @@ const LoginForm = () => {
   const handleSubmit = async (values, { setFieldError }) => {
     try {
       // Check if user exists in localStorage
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = existingUsers.find(u => u.email === values.email);
-      
+      const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      const user = existingUsers.find((u) => u.email === values.email);
+
       if (!user) {
-        setFieldError('email', 'No account found with this email. Please sign up first.');
+        setFieldError(
+          "email",
+          "No account found with this email. Please sign up first."
+        );
         return;
       }
-      
+
       // Login with correct user role
       login({ email: values.email, role: user.role, name: user.name });
-      
+
       if (user.role === "student") {
         navigate("/student-dashboard");
       } else if (user.role === "admin") {
@@ -42,7 +45,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error("Login failed:", error.message);
-      setFieldError('email', 'Login failed. Please try again.');
+      setFieldError("email", "Login failed. Please try again.");
     }
   };
 
@@ -73,19 +76,21 @@ const LoginForm = () => {
                 <div className="password-input-group">
                   <div className="password-input-wrapper">
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       name={field.name}
                       placeholder="Password"
                       value={field.value}
                       onChange={field.onChange}
-                      className={`form-input ${meta.touched && meta.error ? 'error' : ''}`}
+                      className={`form-input ${
+                        meta.touched && meta.error ? "error" : ""
+                      }`}
                     />
                     <button
                       type="button"
                       className="password-toggle"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? '🙈' : '👁️'}
+                      {showPassword ? "^" : "-"}
                     </button>
                   </div>
                   {meta.touched && meta.error && (
@@ -99,8 +104,8 @@ const LoginForm = () => {
             Sign In
           </button>
           <div className="forgot-password-link">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="link-btn"
               onClick={() => setShowForgotPassword(true)}
             >
@@ -109,7 +114,7 @@ const LoginForm = () => {
           </div>
         </Form>
       </Formik>
-      
+
       {showForgotPassword && (
         <div className="forgot-password-modal">
           <div className="modal-content">
@@ -124,29 +129,31 @@ const LoginForm = () => {
             />
             {resetMessage && <p className="reset-message">{resetMessage}</p>}
             <div className="modal-actions">
-              <button 
+              <button
                 className="btn-primary"
                 onClick={() => {
                   if (resetEmail) {
-                    setResetMessage('Password reset instructions sent to your email!');
+                    setResetMessage(
+                      "Password reset instructions sent to your email!"
+                    );
                     setTimeout(() => {
                       setShowForgotPassword(false);
-                      setResetMessage('');
-                      setResetEmail('');
+                      setResetMessage("");
+                      setResetEmail("");
                     }, 2000);
                   } else {
-                    setResetMessage('Please enter your email address');
+                    setResetMessage("Please enter your email address");
                   }
                 }}
               >
                 Send Reset Link
               </button>
-              <button 
+              <button
                 className="btn-secondary"
                 onClick={() => {
                   setShowForgotPassword(false);
-                  setResetMessage('');
-                  setResetEmail('');
+                  setResetMessage("");
+                  setResetEmail("");
                 }}
               >
                 Cancel
