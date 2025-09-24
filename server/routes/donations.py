@@ -1,7 +1,11 @@
 # server/routes/donation_routes.py
 from flask import Blueprint, request, jsonify, session
-from ..models import db, User, StudentProfile, Donation
-from ..utils.decorators import login_required
+try:
+    from ..models import db, User, StudentProfile, Donation
+    from ..utils.decorators import login_required
+except ImportError:
+    from models import db, User, StudentProfile, Donation
+    from utils.decorators import login_required
 from datetime import datetime
 
 donation_bp = Blueprint('donations', __name__, url_prefix='/api')
