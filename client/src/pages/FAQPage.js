@@ -8,7 +8,7 @@ const FAQPage = () => {
 
         <section className="faq-section">
           <div className="faq-item">
-            <h3>❓ How do I donate to a student?</h3>
+            <h3> How do I donate to a student?</h3>
             <p>
               Browse student campaigns, click "Support [Name]" on any student
               card, choose your donation amount, and complete payment via

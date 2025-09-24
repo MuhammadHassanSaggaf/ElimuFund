@@ -92,6 +92,7 @@ const StudentDashboard = () => {
 		);
 	}
 
+
 	return (
 		<div className="modern-dashboard">
 			<div className="dashboard-container">
@@ -274,6 +275,7 @@ const StudentDashboard = () => {
 						</div>
 					</div>
 				</div>
+
 
 				{/* Notifications Section */}
 				<div className="dashboard-card notifications-card">
