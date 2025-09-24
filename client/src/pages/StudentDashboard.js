@@ -98,7 +98,7 @@ const StudentDashboard = () => {
         {/* Header Section */}
         <div className="dashboard-header">
           <div className="welcome-section">
-            <h1>Welcome back, {user?.name}! 👋</h1>
+            <h1>Welcome back, {user?.name}! </h1>
             <p>Track your campaign progress and manage your profile</p>
           </div>
           <div className="header-actions">
@@ -106,7 +106,7 @@ const StudentDashboard = () => {
               className="edit-btn"
               onClick={() => setProfileComplete(false)}
             >
-              ✏️ Edit Profile
+              Edit Profile
             </button>
             <button
               className="delete-btn"
@@ -135,7 +135,7 @@ const StudentDashboard = () => {
                 }
               }}
             >
-              🗑️ Delete Account
+              Delete Account
             </button>
           </div>
         </div>
@@ -143,28 +143,28 @@ const StudentDashboard = () => {
         {/* Stats Overview */}
         <div className="stats-overview">
           <div className="stat-card primary">
-            <div className="stat-icon">💰</div>
+            <div className="stat-icon"></div>
             <div className="stat-content">
               <h3>KSh {totalRaised.toLocaleString()}</h3>
               <p>Total Raised</p>
             </div>
           </div>
           <div className="stat-card success">
-            <div className="stat-icon">🎯</div>
+            <div className="stat-icon"></div>
             <div className="stat-content">
               <h3>KSh {studentData?.fundingNeeded}</h3>
               <p>Goal Amount</p>
             </div>
           </div>
           <div className="stat-card info">
-            <div className="stat-icon">👥</div>
+            <div className="stat-icon"></div>
             <div className="stat-content">
               <h3>{supportersCount}</h3>
               <p>Supporters</p>
             </div>
           </div>
           <div className="stat-card warning">
-            <div className="stat-icon">📊</div>
+            <div className="stat-icon"></div>
             <div className="stat-content">
               <h3>{progressPercentage}%</h3>
               <p>Progress</p>
@@ -183,23 +183,23 @@ const StudentDashboard = () => {
           {/* Profile Card */}
           <div className="dashboard-card profile-card">
             <div className="card-header">
-              <h2>📋 Your Profile</h2>
+              <h2> Your Profile</h2>
             </div>
             <div className="profile-details">
               <div className="detail-item">
-                <span className="label">🏫 Institution:</span>
+                <span className="label"> Institution:</span>
                 <span className="value">{studentData?.institution}</span>
               </div>
               <div className="detail-item">
-                <span className="label">📚 Course:</span>
+                <span className="label"> Course:</span>
                 <span className="value">{studentData?.course}</span>
               </div>
               <div className="detail-item">
-                <span className="label">📅 Year:</span>
+                <span className="label"> Year:</span>
                 <span className="value">{studentData?.yearOfStudy}</span>
               </div>
               <div className="detail-item">
-                <span className="label">🎯 Purpose:</span>
+                <span className="label"> Purpose:</span>
                 <span className="value">{studentData?.purpose}</span>
               </div>
             </div>
@@ -208,7 +208,7 @@ const StudentDashboard = () => {
           {/* Campaign Status */}
           <div className="dashboard-card campaign-card">
             <div className="card-header">
-              <h2>🚀 Campaign Status</h2>
+              <h2> Campaign Status</h2>
             </div>
             <div className="campaign-status">
               <div className="status-indicator pending">
@@ -231,8 +231,8 @@ const StudentDashboard = () => {
                   }}
                 >
                   {campaignData?.id
-                    ? "👁️ View My Campaign"
-                    : "🚀 Make Campaign Live"}
+                    ? " View My Campaign"
+                    : " Make Campaign Live"}
                 </button>
               </div>
             </div>
@@ -241,7 +241,7 @@ const StudentDashboard = () => {
           {/* Donations Received */}
           <div className="dashboard-card donations-card">
             <div className="card-header">
-              <h2>💰 Recent Donations</h2>
+              <h2> Recent Donations</h2>
             </div>
             <div className="donations-content">
               {donations.length === 0 ? (
@@ -261,11 +261,11 @@ const StudentDashboard = () => {
                       <div className="donation-info">
                         <span className="donor-name">👥 {donation.donor}</span>
                         <span className="donation-amount">
-                          💰 KSh {donation.amount.toLocaleString()}
+                          KSh {donation.amount.toLocaleString()}
                         </span>
                       </div>
                       <div className="donation-date">
-                        📅 {new Date(donation.date).toLocaleDateString()}
+                        {new Date(donation.date).toLocaleDateString()}
                       </div>
                     </div>
                   ))}
