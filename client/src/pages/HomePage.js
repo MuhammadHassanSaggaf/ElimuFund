@@ -7,25 +7,17 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
-          <h1>Empowering Dreams Through Education</h1>
+          <h1>
+            Empowering <br></br>Dreams Through Education!
+          </h1>
           <p>
             Connect with students who need your support to achieve their
-            educational goals. Every donation creates a lasting impact.
+            educational goals. Every donation creates a lasting impact on each
+            child's Life.
           </p>
-        </div>
-        <div className="hero-stats">
-          <div className="stat">
-            <h3>2,500+</h3>
-            <p>Students Funded</p>
-          </div>
-          <div className="stat">
-            <h3>$2.8M+</h3>
-            <p>Raised</p>
-          </div>
-          <div className="stat">
-            <h3>98%</h3>
-            <p>Success Rate</p>
-          </div>
+          <Link to="/campaigns" className="btn-primary">
+            Start Supporting Students
+          </Link>
         </div>
       </section>
 
@@ -33,19 +25,26 @@ const HomePage = () => {
       <section className="features">
         <div className="container">
           <h2>Why Choose ElimuFund?</h2>
-          <div className="features-grid">
-            <div className="feature">
-              <div className="feature-icon"></div>
+
+          <div className="feature-row">
+            <div className="feature-img img1"></div>
+            <div className="feature-text">
               <h3>100% Transparent</h3>
               <p>Track every donation and see real academic progress reports</p>
             </div>
-            <div className="feature">
-              <div className="feature-icon"></div>
+          </div>
+
+          <div className="feature-row reverse">
+            <div className="feature-img img2"></div>
+            <div className="feature-text">
               <h3>Verified Students</h3>
               <p>All students undergo rigorous verification processes</p>
             </div>
-            <div className="feature">
-              <div className="feature-icon"></div>
+          </div>
+
+          <div className="feature-row">
+            <div className="feature-img img3"></div>
+            <div className="feature-text">
               <h3>Secure Payments</h3>
               <p>Bank-level security for all transactions</p>
             </div>

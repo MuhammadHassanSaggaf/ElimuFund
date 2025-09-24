@@ -9,6 +9,7 @@ const AboutPage = () => {
           <h1>Transforming Lives Through Education</h1>
           <p>
             Bridging the gap between dreams and reality, one student at a time
+            with your Donation.
           </p>
         </div>
         <div className="hero-visual">
@@ -53,41 +54,52 @@ const AboutPage = () => {
           </div>
         </section>
 
-        {/* Impact Statistics */}
+        {/* Impact & Aspirations */}
         <section className="impact-section">
           <div className="section-header">
-            <h2>Our Global Impact</h2>
+            <h2>Our Global Impact & Aspirations</h2>
             <div className="underline"></div>
           </div>
           <div className="impact-grid">
             <div className="impact-card">
               <div className="impact-icon"></div>
-              <div className="impact-number">2,500+</div>
+              <div className="impact-number">500,000+</div>
               <div className="impact-label">Students Funded</div>
               <div className="impact-description">
-                Across 45 countries worldwide
+                Aspiring to support students across East Africa by 2030
               </div>
             </div>
             <div className="impact-card">
               <div className="impact-icon"></div>
-              <div className="impact-number">$2.8M+</div>
-              <div className="impact-label">Total Raised</div>
-              <div className="impact-description">In educational funding</div>
-            </div>
-            <div className="impact-card">
-              <div className="impact-icon"></div>
-              <div className="impact-number">98%</div>
+              <div className="impact-number">90%+</div>
               <div className="impact-label">Success Rate</div>
               <div className="impact-description">
-                Students completing programs
+                Targeting high completion rates for funded students
               </div>
             </div>
             <div className="impact-card">
               <div className="impact-icon"></div>
-              <div className="impact-number">15,000+</div>
+              <div className="impact-number">50,000+</div>
               <div className="impact-label">Active Donors</div>
-              <div className="impact-description">Making dreams possible</div>
+              <div className="impact-description">
+                Building a global community of supporters and change-makers
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* Partners Section */}
+        <section className="partners-section">
+          <div className="section-header">
+            <h2>Our Partners</h2>
+            <div className="underline"></div>
+          </div>
+          <div className="partners-grid">
+            <div className="partner-card">M-Pesa</div>
+            <div className="partner-card">Visa / Mastercard</div>
+            <div className="partner-card">NGOs & Nonprofits</div>
+            <div className="partner-card">Schools & Alumni Associations</div>
+            <div className="partner-card">Community Organizations</div>
           </div>
         </section>
 
@@ -120,6 +132,14 @@ const AboutPage = () => {
               <p>
                 We measure success by the lives transformed and communities
                 uplifted through education.
+              </p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"></div>
+              <h3>Security & Trust</h3>
+              <p>
+                Every donation is processed securely through audited platforms,
+                ensuring funds reach verified students safely and transparently.
               </p>
             </div>
           </div>

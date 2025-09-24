@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useAuth } from "../context/AuthContext";
 
 const LoginForm = () => {
+
 	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
@@ -12,12 +13,14 @@ const LoginForm = () => {
 	const [resetEmail, setResetEmail] = useState("");
 	const [resetMessage, setResetMessage] = useState("");
 
+
 	const validationSchema = Yup.object({
 		email: Yup.string().email("Invalid email").required("Email is required"),
 		password: Yup.string()
 			.min(6, "Password must be at least 6 characters")
 			.required("Password is required"),
 	});
+
 
 	const handleSubmit = async (values, { setFieldError }) => {
 		try {
