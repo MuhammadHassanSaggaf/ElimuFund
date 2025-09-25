@@ -407,7 +407,7 @@ a {
 }
 
 /* ========== AboutPage Specific Styles ========== */
-/* ========== AboutPage Specific Styles ========== */
+/* ---------- Hero Section ---------- */
 .about-hero {
   position: relative;
   text-align: center;
@@ -448,14 +448,24 @@ a {
   margin: 0 auto;
   line-height: 1.5;
 }
-
-.mission-section,
-.impact-section,
-.partners-section,
-.values-section {
+/* ---------- Section Padding (Mission, Impact, Partners, Values) ---------- */
+.mission-section {
   padding: 6rem 1rem;
 }
 
+.impact-section {
+  padding: 4rem 1rem 3rem 1rem; /* Reduced bottom padding to minimize white space */
+}
+
+.partners-section {
+  padding: 3rem 1rem; /* Smaller padding since it has less content */
+}
+
+.values-section {
+  padding: 6rem 1rem; /* Larger padding for Values section */
+}
+
+/* ---------- Section Headers ---------- */
 .section-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -475,64 +485,315 @@ a {
   border-radius: 2px;
 }
 
-.mission-text p.lead {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+/* ========== Mission Section Styles ========== */
+.mission-section {
+  padding: 6rem 2rem; /* top/bottom & left/right padding */
+  background: #f9fafb;
+  position: relative;
 }
 
-.mission-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.mission-visual .circle-stats .circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: #e9d09a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.section-header h2 {
+  font-size: 2.9rem;
+  font-weight: 800;
   color: #341e10;
-  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
+.section-header .underline {
+  width: 80px;
+  height: 4px;
+  background: #e9d09a;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Mission Images Container */
+.mission-visual {
+  display: flex;
+  flex-wrap: nowrap; /* keep in one row */
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 3rem; /* reduced space below heading */
+  padding: 0 2rem; /* increased padding to use more space */
+  max-width: 100%;
+  overflow: hidden; /* prevent scrolling */
+}
+
+/* Individual Image Cards */
+.mission-card {
+  position: relative;
+  width: 100%;
+  height: 500px; /* increased height for better readability */
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  flex: 1; /* make cards flexible to fill space */
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+  min-width: 0; /* allow shrinking */
+}
+
+.mission-card:hover {
+  transform: scale(1.05);
+}
+
+/* Overlay Sliding from Right */
+.mission-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -100%; /* start outside */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(233, 208, 154, 0.95); /* brown theme */
+  transition: right 0.6s ease;
+  z-index: 1;
+}
+
+.mission-card:hover::before {
+  right: 0; /* slide in */
+}
+
+/* Overlay Text */
+.mission-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #341e10; /* dark text on overlay */
+  text-align: center;
+  padding: 2.5rem;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease; /* slow fade in/out */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+.mission-text-overlay h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #341e10;
+}
+
+.mission-text-overlay p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  color: #341e10;
+}
+
+/* Keep overlay text visible a bit after hover out */
+.mission-card:hover .mission-text-overlay {
+  opacity: 1;
+}
+
+/* Background Images */
+.img1 {
+  background-image: url("https://static.wixstatic.com/media/3288de_97ac203e038443b79b5ebe11e54fe441~mv2.png/v1/crop/x_0,y_240,w_2083,h_1843/fill/w_680,h_602,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/3288de_97ac203e038443b79b5ebe11e54fe441~mv2.png");
+}
+
+.img2 {
+  background-image: url("https://images.unsplash.com/photo-1549616234-651ef5085250?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+.img3 {
+  background-image: url("https://images.unsplash.com/photo-1680265198350-e5a716d043ab?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .mission-visual {
+    padding: 0 1.5rem;
+    gap: 1rem;
+  }
+  
+  .mission-card {
+    height: 450px;
+  }
+  
+  .mission-text-overlay {
+    padding: 2rem;
+  }
+  
+  .mission-text-overlay h3 {
+    font-size: 1.3rem;
+  }
+  
+  .mission-text-overlay p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mission-visual {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .mission-card {
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
+  }
+  
+  .mission-text-overlay {
+    padding: 1.5rem;
+  }
+  
+  .mission-text-overlay h3 {
+    font-size: 1.2rem;
+  }
+  
+  .mission-text-overlay p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ========== Impact Section Styles ========== */
+.impact-section {
+  position: relative;
+  background: #f9fafb;
+  overflow: hidden;
+}
+
+.impact-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://images.unsplash.com/photo-1712150177656-b3c0bd50eb25?q=80&w=992&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.impact-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Impact Section Header Animation - Right to Left */
+.impact-section .section-header {
+  opacity: 0;
+  transform: translateX(100px);
+  animation: slideInFromRight 1s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% cover 30%;
+}
+
+@keyframes slideInFromRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Impact Grid */
 .impact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem; /* Reduced gap between cards */
+  margin-top: 3rem;
 }
 
+/* Impact Cards Animation - Left to Right */
 .impact-card {
-  background: #fff3e0;
-  padding: 2rem;
-  border-radius: 1rem;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(-80px);
+  animation: slideInFromLeft 1s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
-.impact-card .impact-number {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 1rem 0;
+.impact-card:nth-child(2) {
+  animation-delay: 0.2s;
 }
 
-.impact-card .impact-label {
-  font-size: 1.2rem;
-  font-weight: 600;
+.impact-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes slideInFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Impact Icons - Hidden */
+.impact-icon {
+  display: none;
+}
+
+/* Impact Numbers */
+.impact-number {
+  font-size: 4rem;
+  font-weight: 900;
   color: #341e10;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #341e10, #59280d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.impact-card .impact-description {
-  font-size: 1rem;
+/* Impact Labels */
+.impact-label {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #59280d;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Impact Descriptions */
+.impact-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #341e10;
+  opacity: 0.9;
+  max-width: 300px;
+  margin: 0 auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .impact-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .impact-number {
+    font-size: 3rem;
+  }
+  
+  .impact-label {
+    font-size: 1.3rem;
+  }
+  
+  .impact-description {
+    font-size: 1rem;
+  }
+}
+
+/* ---------- Partners Section ---------- */
 .partners-grid {
   display: flex;
   flex-wrap: wrap;
@@ -540,6 +801,7 @@ a {
   justify-content: center;
 }
 
+/* Partners Cards Animation - Scroll Triggered */
 .partner-card {
   background: #e9d09a;
   color: #341e10;
@@ -547,31 +809,160 @@ a {
   border-radius: 9999px;
   font-weight: 600;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% cover 50%;
+  transition: all 0.3s ease;
 }
 
+.partner-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.partner-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.partner-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.partner-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.partner-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.partner-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Values Section ---------- */
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
 }
 
+/* Values Cards Animation - Right to Left */
 .value-card {
-  background: #fff3e0;
-  padding: 2rem;
-  border-radius: 1rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2.5rem 2rem;
+  border-radius: 1.5rem;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(52, 30, 16, 0.1);
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateX(80px);
+  animation: slideInFromRight 1s ease forwards;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Hover overlay for text readability */
+.value-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 1.5rem;
+}
+
+.value-card:hover::before {
+  opacity: 1;
+}
+
+.value-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Text styling - dark colors for hover readability */
 .value-card h3 {
   margin-top: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  color: #341e10;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.value-card:hover h3 {
   color: #341e10;
 }
 
 .value-card p {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   color: #59280d;
-  line-height: 1.5;
+  line-height: 1.6;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.value-card:hover p {
+  color: #59280d;
+}
+
+.value-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.value-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.value-card:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes slideInFromRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.value-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(52, 30, 16, 0.2);
+}
+
+
+/* Specific Background Images for Value Cards */
+.transparency-bg {
+  background-image: url("https://images.unsplash.com/photo-1615279113483-82e6693dab8f?q=80&w=862&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+.trust-bg {
+  background-image: url("https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+.impact-bg {
+  background-image: url("https://images.unsplash.com/photo-1635038726688-6c5d78b6d0ef?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+.security-bg {
+  background-image: url("https://images.unsplash.com/photo-1720135885458-0af8193c4a0f?q=80&w=867&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 }
 
