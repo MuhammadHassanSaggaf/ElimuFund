@@ -6,6 +6,7 @@ import apiService from "../services/api";
 import NotificationSystem from "../components/NotificationSystem";
 
 const StudentDashboard = () => {
+
 	const { user } = useAuth();
 	const navigate = useNavigate();
 	const [profileComplete, setProfileComplete] = useState(false);
@@ -284,6 +285,7 @@ const StudentDashboard = () => {
 			</div>
 		</div>
 	);
+ 
 };
 
 export default StudentDashboard;

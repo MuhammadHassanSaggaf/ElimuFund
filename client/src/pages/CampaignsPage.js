@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
+
 import { useAuth } from "../context/AuthContext";
 import apiService from "../services/api";
 
 const CampaignsPage = () => {
+
 	const { user } = useAuth();
 	const [students, setStudents] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -38,6 +41,7 @@ const CampaignsPage = () => {
 				setLoading(false);
 			}
 		};
+
 
 		if (user) {
 			loadStudents();

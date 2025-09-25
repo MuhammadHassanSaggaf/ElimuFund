@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DonationForm from "../components/DonationForm";
 import ProgressBar from "../components/ProgressBar";
+
 import apiService from "../services/api";
 
 const CampaignDetailPage = () => {
@@ -24,7 +25,6 @@ const CampaignDetailPage = () => {
 				setLoading(false);
 			}
 		};
-
 		if (id) {
 			fetchStudent();
 		}
@@ -40,7 +40,7 @@ const CampaignDetailPage = () => {
 				</div>
 			</div>
 		);
-	}
+	
 
 	if (error || !student) {
 		return (

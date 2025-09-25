@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
+
 	const validationSchema = Yup.object({
 		full_name: Yup.string().required("Full name is required"),
 		academic_level: Yup.string().required("Education level is required"),
@@ -188,6 +189,8 @@ const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
 			</Formik>
 		</div>
 	);
+
+ 
 };
 
 export default StudentDetailsForm;

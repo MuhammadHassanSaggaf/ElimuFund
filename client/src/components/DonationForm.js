@@ -9,6 +9,7 @@ const DonationForm = ({ student }) => {
 	const [availableStudents] = useState([]);
 	const [excessAmount] = useState(0);
 
+
 	const validationSchema = Yup.object({
 		amount: Yup.number()
 			.positive("Amount must be positive")
@@ -34,6 +35,7 @@ const DonationForm = ({ student }) => {
 		try {
 			const donationAmount = Number(values.amount);
 
+
 			// Call API to create donation
 			await apiService.createDonation({
 				student_id: student.id,
@@ -44,6 +46,7 @@ const DonationForm = ({ student }) => {
 			});
 
 			setDonationSuccess(true);
+
 
 			// Refresh the page to show updated amounts
 			setTimeout(() => {

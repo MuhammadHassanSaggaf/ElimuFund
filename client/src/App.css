@@ -1,4 +1,6 @@
+
 /* ========== Global Styles ========== */
+
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -19,6 +21,7 @@ a {
   padding: 0 1rem;
 }
 
+
 /* ========== Navbar ========== */
 .navbar {
   background: #341e10; /* Dark Sienna */
@@ -29,6 +32,7 @@ a {
 }
 
 .navbar-container {
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,6 +40,7 @@ a {
 }
 
 .navbar-brand {
+
   font-weight: 800;
   font-size: 1.5rem;
   color: #e9d09a; /* Deep Champagne */
@@ -569,3 +574,4 @@ a {
   color: #59280d;
   line-height: 1.5;
 }
+
