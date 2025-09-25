@@ -16,19 +16,20 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          <span className="brand-icon">🎓</span>
+          <span className="brand-icon"></span>
           ElimuFund
         </Link>
         <div className="navbar-links">
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/campaigns" className="nav-link">
-            Campaigns
-          </Link>
           <Link to="/about" className="nav-link">
             About
           </Link>
+          <Link to="/campaigns" className="nav-link">
+            Campaigns
+          </Link>
+
           {!isAuthenticated ? (
             <>
               <Link to="/login" className="nav-link">
@@ -40,8 +41,12 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link 
-                to={user?.role === "student" ? "/student-dashboard" : "/donor-dashboard"} 
+              <Link
+                to={
+                  user?.role === "student"
+                    ? "/student-dashboard"
+                    : "/donor-dashboard"
+                }
                 className="nav-link"
               >
                 Dashboard
