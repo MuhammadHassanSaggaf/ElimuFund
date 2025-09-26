@@ -26,14 +26,21 @@ const StudentDashboard = () => {
 						setCampaignData(apiService.transformStudentData(profile));
 						setProfileComplete(true);
 
-						// Load donations for this student (we'll need to implement this endpoint)
-						// For now, we'll use empty array
-						setDonations([]);
+						// Load donations for this student
+						try {
+							const donationsResponse = await apiService.getStudentDonations(profile.id);
+							setDonations(donationsResponse.donations || []);
+						} catch (donationErr) {
+							console.log("No donations endpoint yet, using empty array");
+							setDonations([]);
+						}
 					}
 				} catch (err) {
 					console.error("Error loading student profile:", err);
-					// Profile doesn't exist yet
+					// Profile doesn't exist yet - this is normal for new users
 					setProfileComplete(false);
+					setCampaignData(null);
+					setDonations([]);
 				} finally {
 					setLoading(false);
 				}
@@ -43,23 +50,32 @@ const StudentDashboard = () => {
 		if (user) {
 			loadStudentProfile();
 		}
-	}, [user]);
+
+		// Auto-refresh every 30 seconds to check for new donations and updates
+		const refreshInterval = setInterval(() => {
+			if (user?.role === "student" && profileComplete) {
+				loadStudentProfile();
+			}
+		}, 30000);
+
+		return () => clearInterval(refreshInterval);
+	}, [user, profileComplete]);
 
 	const totalRaised = campaignData?.amount_raised || 0;
 	const supportersCount = campaignData?.supporters_count || 0;
 
 	// Calculate progress percentage
-	const progressPercentage = studentData?.fundingNeeded
-		? Math.round((totalRaised / studentData.fundingNeeded) * 100)
+	const progressPercentage = (campaignData?.fee_amount || studentData?.fee_amount)
+		? Math.round((totalRaised / (campaignData?.fee_amount || studentData?.fee_amount)) * 100)
 		: 0;
 
 	const handleProfileSubmit = async (values) => {
 		try {
 			setLoading(true);
 
-			// Check if profile already exists
-			const existingProfile = await apiService.getMyProfile();
-			
+			console.log("Starting profile submission for user:", user);
+			console.log("Form values:", values);
+
 			const profileData = {
 				full_name: values.full_name,
 				academic_level: values.academic_level,
@@ -70,13 +86,21 @@ const StudentDashboard = () => {
 					values.profile_image || "https://picsum.photos/seed/student/300/300",
 			};
 
+			console.log("Profile data to submit:", profileData);
+
 			let response;
-			if (existingProfile) {
-				// Update existing profile
-				response = await apiService.updateStudentProfile(existingProfile.id, profileData);
-				console.log("Profile updated successfully:", response);
-			} else {
-				// Create new profile
+			try {
+				// First try to get existing profile
+				const existingProfile = await apiService.getMyProfile();
+				if (existingProfile) {
+					// Update existing profile
+					console.log("Updating existing profile...");
+					response = await apiService.updateStudentProfile(existingProfile.id, profileData);
+					console.log("Profile updated successfully:", response);
+				}
+			} catch (profileError) {
+				// Profile doesn't exist, create new one
+				console.log("Profile doesn't exist, creating new profile...");
 				response = await apiService.createStudentProfile(profileData);
 				console.log("Profile created successfully:", response);
 			}
@@ -87,19 +111,47 @@ const StudentDashboard = () => {
 			setProfileComplete(true);
 
 			// Show success message
-			alert("Profile updated successfully!");
+			alert("Profile saved successfully!");
 
 			// Refresh the page to show updated data from backend
 			setTimeout(() => {
 				window.location.reload();
 			}, 1500);
 		} catch (err) {
-			console.error("Error updating student profile:", err);
-			alert("Failed to update profile. Please try again.");
+			console.error("Error saving student profile:", err);
+			console.error("Error details:", err.message);
+			console.error("Error stack:", err.stack);
+			alert(`Failed to save profile. Error: ${err.message}`);
 		} finally {
 			setLoading(false);
 		}
 	};
+
+	// Show loading while checking authentication
+	if (loading) {
+		return (
+			<div className="student-dashboard">
+				<div style={{ textAlign: 'center', padding: '2rem' }}>
+					<div className="loading-spinner">⏳</div>
+					<h2>Loading...</h2>
+					<p>Please wait while we set up your profile</p>
+				</div>
+			</div>
+		);
+	}
+
+	// Check if user is authenticated
+	if (!user || user.role !== 'student') {
+		return (
+			<div className="student-dashboard">
+				<div style={{ textAlign: 'center', padding: '2rem' }}>
+					<h2>Access Denied</h2>
+					<p>Please sign up as a student to access this page.</p>
+					<a href="/signup" className="btn-primary">Sign Up</a>
+				</div>
+			</div>
+		);
+	}
 
 	if (!profileComplete) {
 		return (
@@ -139,31 +191,10 @@ const StudentDashboard = () => {
 						<button
 							className="delete-btn"
 							onClick={() => {
-								if (
-									window.confirm(
-										"Are you sure you want to delete your account? This action cannot be undone.",
-									)
-								) {
-									// Remove user's campaign from localStorage
-									const allStudents = JSON.parse(
-										localStorage.getItem("students") || "[]",
-									);
-									const updatedStudents = allStudents.filter(
-										(s) => s.full_name !== user?.name,
-									);
-									localStorage.setItem(
-										"students",
-										JSON.stringify(updatedStudents),
-									);
-
-									// Clear user session and redirect
-									localStorage.removeItem("user");
-									alert("Account deleted successfully");
-									window.location.href = "/";
-								}
+								alert("To delete your account, please contact our admin team at admin@elimufund.com. This ensures proper handling of any donations received.");
 							}}
 						>
-							Delete Account
+							Contact Admin for Account Deletion
 						</button>
 					</div>
 				</div>
@@ -178,7 +209,7 @@ const StudentDashboard = () => {
 					</div>
 					<div className="stat-card success">
 						<div className="stat-content">
-							<h3>KSh {studentData?.fundingNeeded}</h3>
+							<h3>KSh {(campaignData?.fee_amount || studentData?.fee_amount)?.toLocaleString()}</h3>
 							<p>Goal Amount</p>
 						</div>
 					</div>
@@ -211,20 +242,20 @@ const StudentDashboard = () => {
 						</div>
 						<div className="profile-details">
 							<div className="detail-item">
-								<span className="label">Institution:</span>
-								<span className="value">{studentData?.institution}</span>
+								<span className="label">School:</span>
+								<span className="value">{campaignData?.school_name || studentData?.school_name}</span>
 							</div>
 							<div className="detail-item">
-								<span className="label">Course:</span>
-								<span className="value">{studentData?.course}</span>
+								<span className="label">Education Level:</span>
+								<span className="value">{campaignData?.academic_level || studentData?.academic_level}</span>
 							</div>
 							<div className="detail-item">
-								<span className="label">Year:</span>
-								<span className="value">{studentData?.yearOfStudy}</span>
+								<span className="label">Fee Amount:</span>
+								<span className="value">KSh {(campaignData?.fee_amount || studentData?.fee_amount)?.toLocaleString()}</span>
 							</div>
 							<div className="detail-item">
-								<span className="label">Purpose:</span>
-								<span className="value">{studentData?.purpose}</span>
+								<span className="label">Status:</span>
+								<span className="value">{campaignData?.is_verified ? 'Verified' : 'Pending Review'}</span>
 							</div>
 						</div>
 					</div>
@@ -235,12 +266,22 @@ const StudentDashboard = () => {
 							<h2>Campaign Status</h2>
 						</div>
 						<div className="campaign-status">
-							<div className="status-indicator pending">
-								<div className="status-dot"></div>
-								<span>Pending Review</span>
-							</div>
+							{campaignData?.is_verified ? (
+								<div className="status-indicator approved">
+									<div className="status-dot"></div>
+									<span>Approved & Live</span>
+								</div>
+							) : (
+								<div className="status-indicator pending">
+									<div className="status-dot"></div>
+									<span>Pending Review</span>
+								</div>
+							)}
 							<p className="status-description">
-								Your campaign is being reviewed. This usually takes 24-48 hours.
+								{campaignData?.is_verified 
+									? "Your campaign has been approved and is now live! Donors can now contribute to your education."
+									: "Your campaign is being reviewed. This usually takes 24-48 hours."
+								}
 							</p>
 							<div className="campaign-actions">
 								<button
@@ -302,7 +343,7 @@ const StudentDashboard = () => {
 
 				{/* Notifications Section */}
 				<div className="dashboard-card notifications-card">
-					<NotificationSystem userId={user?.id} />
+					<NotificationSystem userId={user?.id} campaignData={campaignData} donations={donations} />
 				</div>
 			</div>
 		</div>

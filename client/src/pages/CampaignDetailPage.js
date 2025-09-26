@@ -77,10 +77,12 @@ const CampaignDetailPage = () => {
                       </span>
                     </div>
                   )}
-                  <div className="verified-badge">✓ Verified</div>
                 </div>
                 <div className="student-details">
-                  <h1>{student.full_name}</h1>
+                  <div className="student-name-section">
+                    <h1>{student.full_name}</h1>
+                    <div className="verified-badge">✓ Verified</div>
+                  </div>
                   <p className="student-subtitle">
                     {student.academic_level} at {student.school_name}
                   </p>
