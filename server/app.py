@@ -32,8 +32,16 @@ def create_app():
     migrate = Migrate(app, db)
     
     # Configure CORS - CRITICAL for frontend connection
+    # Allow both localhost (development) and production origins
+    allowed_origins = [
+        "http://localhost:3000",  # Development
+        "https://elimu-fund-rho.vercel.app",  # Vercel production frontend
+        "https://elimufund.onrender.com",  # Render production frontend
+        "https://elimufund-client.onrender.com"  # Alternative production URL
+    ]
+    
     CORS(app, 
-        resources={r"/api/*": {"origins": "http://localhost:3000"}},
+        resources={r"/api/*": {"origins": allowed_origins}},
         supports_credentials=True,
         allow_headers=["Content-Type"],
         methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
@@ -56,4 +64,8 @@ if __name__ == '__main__':
     app = create_app()
     with app.app_context():
         db.create_all()  # Create tables if they don't exist
-    app.run(port=5000, debug=True)
+    
+    # Get port from environment variable (for deployment) or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    # Bind to 0.0.0.0 for deployment compatibility
+    app.run(host='0.0.0.0', port=port, debug=True)
