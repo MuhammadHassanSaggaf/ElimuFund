@@ -114,12 +114,18 @@ def update_student_profile(id):
         data = request.get_json()
         
         # Update allowed fields
+        if 'full_name' in data:
+            student.full_name = data['full_name']
+        if 'academic_level' in data:
+            student.academic_level = data['academic_level']
+        if 'school_name' in data:
+            student.school_name = data['school_name']
+        if 'fee_amount' in data:
+            student.fee_amount = float(data['fee_amount'])
         if 'story' in data:
             student.story = data['story']
         if 'profile_image' in data:
             student.profile_image = data['profile_image']
-        if 'fee_amount' in data and user.role == 'admin':
-            student.fee_amount = float(data['fee_amount'])
         
         db.session.commit()
         
