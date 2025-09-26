@@ -78,13 +78,22 @@ const CampaignDetailPage = () => {
 											</span>
 										</div>
 									)}
-									<div className="verified-badge">✓ Verified</div>
+
+									{/* Optional avatar overlay badge (uncomment if you prefer the badge visually on the avatar)
+									<div className="avatar-verified-badge">✓</div>
+									*/}
 								</div>
+
 								<div className="student-details">
-									<h1>{student.full_name}</h1>
+									<div className="student-name-section">
+										<h1>{student.full_name}</h1>
+										<div className="verified-badge">✓ Verified</div>
+									</div>
+
 									<p className="student-subtitle">
 										{student.academic_level} at {student.school_name}
 									</p>
+
 									<div className="campaign-stats">
 										<div className="stat">
 											<span className="stat-value">
@@ -111,6 +120,7 @@ const CampaignDetailPage = () => {
 											<span className="stat-label">Followers</span>
 										</div>
 									</div>
+
 									<div className="follow-section">
 										<FollowButton
 											studentId={student.id}
