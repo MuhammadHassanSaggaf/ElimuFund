@@ -7,6 +7,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
+# Many-to-Many Association Table
+# User-StudentProfile Supporters (Donors following/supporting students)
+user_student_supporters = db.Table('user_student_supporters',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('student_profile_id', db.Integer, db.ForeignKey('student_profiles.id'), primary_key=True),
+    db.Column('followed_at', db.DateTime, default=datetime.utcnow)
+)
+
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     
@@ -21,6 +29,12 @@ class User(db.Model, SerializerMixin):
     # Relationships
     student_profile = db.relationship('StudentProfile', back_populates='user', uselist=False, cascade='all, delete-orphan')
     donations = db.relationship('Donation', back_populates='donor', cascade='all, delete-orphan')
+    
+    # Many-to-Many Relationship
+    supported_students = db.relationship('StudentProfile', 
+                                       secondary=user_student_supporters, 
+                                       back_populates='supporters',
+                                       lazy='dynamic')
     
     # Serialization rules
     serialize_rules = ('-_password_hash', '-student_profile.user', '-donations.donor')
@@ -84,6 +98,12 @@ class StudentProfile(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='student_profile')
     donations = db.relationship('Donation', back_populates='student_profile', cascade='all, delete-orphan')
     
+    # Many-to-Many Relationship
+    supporters = db.relationship('User', 
+                               secondary=user_student_supporters, 
+                               back_populates='supported_students',
+                               lazy='dynamic')
+    
     # Serialization rules
     serialize_rules = ('-user.student_profile', '-donations.student_profile', '-user._password_hash')
     
@@ -100,8 +120,18 @@ class StudentProfile(db.Model, SerializerMixin):
             raise ValueError('Story must be at least 50 characters')
         return story
     
-    def to_dict_full(self):
+    def to_dict_full(self, current_user_id=None):
         """Return full student profile with user info"""
+        # Get followers count
+        followers_count = self.supporters.count()
+        
+        # Check if current user is following this student
+        is_following = False
+        if current_user_id:
+            current_user = User.query.get(current_user_id)
+            if current_user and current_user.role == 'donor':
+                is_following = current_user.supported_students.filter_by(id=self.id).first() is not None
+        
         return {
             'id': self.id,
             'user_id': self.user_id,
@@ -115,7 +145,9 @@ class StudentProfile(db.Model, SerializerMixin):
             'is_verified': self.is_verified,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'percentage_raised': (self.amount_raised / self.fee_amount * 100) if self.fee_amount > 0 else 0,
-            'remaining_amount': self.fee_amount - self.amount_raised
+            'remaining_amount': self.fee_amount - self.amount_raised,
+            'followers_count': followers_count,
+            'is_following': is_following
         }
     
     def __repr__(self):

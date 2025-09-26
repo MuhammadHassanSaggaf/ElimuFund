@@ -24,8 +24,11 @@ def get_all_students():
         # Randomize order for fairness
         students = query.order_by(func.random()).all()
         
+        # Get current user ID if logged in
+        current_user_id = session.get('user_id')
+        
         return jsonify({
-            'students': [s.to_dict_full() for s in students],
+            'students': [s.to_dict_full(current_user_id) for s in students],
             'count': len(students)
         }), 200
         
@@ -50,7 +53,10 @@ def get_student_by_id(id):
                 'donor': donation.donor.username if not donation.is_anonymous else 'Anonymous'
             })
         
-        student_data = student.to_dict_full()
+        # Get current user ID if logged in
+        current_user_id = session.get('user_id')
+        
+        student_data = student.to_dict_full(current_user_id)
         student_data['recent_donations'] = recent_donations
         student_data['total_donors'] = len(student.donations)
         

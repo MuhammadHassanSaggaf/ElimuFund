@@ -56,3 +56,17 @@ def student_required(func):
             return jsonify({'error': 'Student access required'}), 403
         return func(*args, **kwargs)
     return wrapper
+
+def donor_required(func):
+    """Require a logged-in donor user."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Authentication required'}), 401
+        User = _get_user_model()
+        user = User.query.get(user_id)
+        if not user or getattr(user, 'role', None) != 'donor':
+            return jsonify({'error': 'Donor access required'}), 403
+        return func(*args, **kwargs)
+    return wrapper

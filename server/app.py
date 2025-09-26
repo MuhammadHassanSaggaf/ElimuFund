@@ -13,6 +13,7 @@ try:
     from .routes.students import student_bp
     from .routes.donations import donation_bp
     from .routes.admin import admin_bp
+    from .routes.supporters import supporters_bp
 except ImportError:
     from config import Config
     from models import db
@@ -20,6 +21,7 @@ except ImportError:
     from routes.students import student_bp
     from routes.donations import donation_bp
     from routes.admin import admin_bp
+    from routes.supporters import supporters_bp
 
 def create_app():
     app = Flask(__name__)
@@ -41,6 +43,7 @@ def create_app():
     app.register_blueprint(student_bp)
     app.register_blueprint(donation_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(supporters_bp)
     
     # Test route
     @app.route('/api/test')

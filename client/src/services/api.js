@@ -152,6 +152,31 @@ class ApiService {
 		});
 	}
 
+	// Supporters/Following endpoints
+	async followStudent(studentId) {
+		return this.request(`/students/${studentId}/follow`, {
+			method: "POST",
+		});
+	}
+
+	async unfollowStudent(studentId) {
+		return this.request(`/students/${studentId}/unfollow`, {
+			method: "DELETE",
+		});
+	}
+
+	async getMyFollowedStudents() {
+		return this.request("/my-followed-students");
+	}
+
+	async getStudentSupporters(studentId) {
+		return this.request(`/students/${studentId}/supporters`);
+	}
+
+	async checkIfFollowing(studentId) {
+		return this.request(`/students/${studentId}/following-status`);
+	}
+
 	// Admin endpoints
 	async getAdminStats() {
 		return this.request("/admin/dashboard-stats");
@@ -206,6 +231,8 @@ class ApiService {
 			profile_image: apiStudent.profile_image,
 			is_verified: apiStudent.is_verified,
 			supporters_count: apiStudent.total_donors || 0,
+			followers_count: apiStudent.followers_count || 0,
+			is_following: apiStudent.is_following || false,
 			percentage_raised: apiStudent.percentage_raised || 0,
 			remaining_amount: apiStudent.remaining_amount || 0,
 			created_at: apiStudent.created_at,
