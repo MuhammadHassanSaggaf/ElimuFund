@@ -1580,6 +1580,10 @@ select.form-input:focus {
   background: #e9d09a;
 }
 
+.status-indicator.approved .status-dot {
+  background: #10b981;
+}
+
 .status-indicator span {
   font-weight: 500;
   color: #341e10;
@@ -1776,7 +1780,7 @@ select.form-input:focus {
 }
 
 .progress-fill {
-  width: 60%;
+  width: 0%; /* Start at 0% for new users */
   height: 100%;
   background: #e9d09a;
   border-radius: 2px;
@@ -1996,6 +2000,10 @@ select.form-input:focus {
 
 .status-indicator.pending .status-dot {
   background: #e9d09a;
+}
+
+.status-indicator.approved .status-dot {
+  background: #10b981;
 }
 
 .status-indicator span {
@@ -2979,7 +2987,7 @@ select.form-input:focus {
 
 .student-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1.5rem;
   width: 100%;
   justify-content: center;
@@ -2988,6 +2996,7 @@ select.form-input:focus {
 .student-avatar {
   position: relative;
   flex-shrink: 0;
+  margin-top: 0.5rem;
 }
 
 .student-avatar img {
@@ -3018,20 +3027,37 @@ select.form-input:focus {
 }
 
 .verified-badge {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
   background: #10b981;
   color: white;
-  padding: 0.2rem 0.4rem;
-  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  border: 2px solid white;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
 }
 
 .student-details {
   flex: 1;
+}
+
+.student-name-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.student-name-section h1 {
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .student-details h1 {
