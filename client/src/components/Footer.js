@@ -11,7 +11,7 @@ const Footer = () => {
         </div>
         <div className="footer-section">
           <h5>Quick Links</h5>
-          <Link to="/" className="footer-link">
+          <Link to="/campaigns" className="footer-link">
             Browse Students
           </Link>
           <Link to="/how-it-works" className="footer-link">
