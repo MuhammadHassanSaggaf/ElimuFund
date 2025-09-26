@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 import apiService from "../services/api";
 
 const DonorDashboard = () => {
-
 	const { user } = useAuth();
 	const [allStudents, setAllStudents] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -39,11 +38,11 @@ const DonorDashboard = () => {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			const cardsSection = document.querySelector('.donor-students-grid');
+			const cardsSection = document.querySelector(".donor-students-grid");
 			if (cardsSection) {
 				const rect = cardsSection.getBoundingClientRect();
 				const windowHeight = window.innerHeight;
-				
+
 				// Trigger animation when cards section is 50% visible
 				if (rect.top <= windowHeight * 0.5 && rect.bottom >= 0) {
 					setCardsVisible(true);
@@ -52,13 +51,13 @@ const DonorDashboard = () => {
 		};
 
 		// Add scroll listener
-		window.addEventListener('scroll', handleScroll);
-		
+		window.addEventListener("scroll", handleScroll);
+
 		// Check on mount in case cards are already visible
 		handleScroll();
 
 		// Cleanup
-		return () => window.removeEventListener('scroll', handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
 	}, [allStudents.length]);
 
 	const studentsNeedingHelp = allStudents.filter(
@@ -109,6 +108,11 @@ const DonorDashboard = () => {
 			<div className="donor-dashboard-header">
 				<h1>Students Who Need Help</h1>
 				<p>Find students to support in their educational journey</p>
+				<div className="donor-dashboard-actions">
+					<Link to="/followed-students" className="followed-students-link">
+						👥 My Followed Students
+					</Link>
+				</div>
 			</div>
 
 			<div className="donor-dashboard-stats">
@@ -130,7 +134,11 @@ const DonorDashboard = () => {
 
 			<div className="donor-dashboard-section">
 				<h2>Students Who Need Your Help</h2>
-				<div className={`donor-students-grid ${cardsVisible ? 'cards-visible' : ''}`}>
+				<div
+					className={`donor-students-grid ${
+						cardsVisible ? "cards-visible" : ""
+					}`}
+				>
 					{studentsNeedingHelp.length === 0 ? (
 						<div className="donor-empty-state">
 							<p>No students need help at the moment</p>
@@ -154,7 +162,9 @@ const DonorDashboard = () => {
 									<div className="donor-student-info">
 										<h4>{student.full_name}</h4>
 										<div className="donor-student-detail">
-											<span className="donor-student-detail-label">School:</span>
+											<span className="donor-student-detail-label">
+												School:
+											</span>
 											<span>{student.school_name}</span>
 										</div>
 										<div className="donor-student-detail">
@@ -169,15 +179,21 @@ const DonorDashboard = () => {
 										<div className="donor-funding-stats">
 											<div className="donor-funding-stat">
 												<div className="donor-funding-stat-label">Progress</div>
-												<div className="donor-funding-stat-value">{progressPercentage}%</div>
+												<div className="donor-funding-stat-value">
+													{progressPercentage}%
+												</div>
 											</div>
 											<div className="donor-funding-stat">
 												<div className="donor-funding-stat-label">Raised</div>
-												<div className="donor-funding-stat-value">KSh {amountRaised.toLocaleString()}</div>
+												<div className="donor-funding-stat-value">
+													KSh {amountRaised.toLocaleString()}
+												</div>
 											</div>
 											<div className="donor-funding-stat">
 												<div className="donor-funding-stat-label">Needed</div>
-												<div className="donor-funding-stat-value">KSh {amountNeeded.toLocaleString()}</div>
+												<div className="donor-funding-stat-value">
+													KSh {amountNeeded.toLocaleString()}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -192,7 +208,6 @@ const DonorDashboard = () => {
 			</div>
 		</div>
 	);
-
 };
 
 export default DonorDashboard;

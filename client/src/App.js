@@ -16,36 +16,41 @@ import CampaignDetailPage from "./pages/CampaignDetailPage";
 import DonorDashboard from "./pages/DonorDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import FollowedStudentsPage from "./pages/FollowedStudentsPage";
 import "./App.css";
 
 const App = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <div className="app">
-          <Navbar />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/campaigns" element={<CampaignsPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/how-it-works" element={<HowItWorksPage />} />
-              <Route path="/contact" element={<SupportPage />} />
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/campaign/:id" element={<CampaignDetailPage />} />
-              <Route path="/donor-dashboard" element={<DonorDashboard />} />
-              <Route path="/student-dashboard" element={<StudentDashboard />} />
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
-  );
+	return (
+		<AuthProvider>
+			<Router>
+				<div className="app">
+					<Navbar />
+					<main className="main-content">
+						<Routes>
+							<Route path="/" element={<HomePage />} />
+							<Route path="/campaigns" element={<CampaignsPage />} />
+							<Route path="/about" element={<AboutPage />} />
+							<Route path="/how-it-works" element={<HowItWorksPage />} />
+							<Route path="/contact" element={<SupportPage />} />
+							<Route path="/faq" element={<FAQPage />} />
+							<Route path="/terms" element={<TermsPage />} />
+							<Route path="/login" element={<LoginPage />} />
+							<Route path="/signup" element={<SignupPage />} />
+							<Route path="/campaign/:id" element={<CampaignDetailPage />} />
+							<Route path="/donor-dashboard" element={<DonorDashboard />} />
+							<Route path="/student-dashboard" element={<StudentDashboard />} />
+							<Route path="/admin-dashboard" element={<AdminDashboard />} />
+							<Route
+								path="/followed-students"
+								element={<FollowedStudentsPage />}
+							/>
+						</Routes>
+					</main>
+					<Footer />
+				</div>
+			</Router>
+		</AuthProvider>
+	);
 };
 
 export default App;
