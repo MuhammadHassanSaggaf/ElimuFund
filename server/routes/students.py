@@ -160,3 +160,28 @@ def get_my_profile():
         
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+@student_bp.route('/<int:student_id>/donations', methods=['GET'])
+@login_required
+def get_student_donations(student_id):
+    """Get donations for a specific student"""
+    try:
+        # Check if the requesting user is the student or an admin
+        user = User.query.get(session['user_id'])
+        if user.role not in ['admin'] and (not user.student_profile or user.student_profile.id != student_id):
+            return jsonify({'error': 'Unauthorized'}), 403
+        
+        student_profile = StudentProfile.query.get(student_id)
+        if not student_profile:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        donations = Donation.query.filter_by(student_profile_id=student_id).order_by(Donation.created_at.desc()).all()
+        
+        return jsonify({
+            'donations': [d.to_dict_with_details() for d in donations],
+            'count': len(donations),
+            'total_amount': sum(d.amount for d in donations)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
