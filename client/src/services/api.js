@@ -2,9 +2,19 @@
 // Use CRA proxy in development to keep cookies same-origin
 const API_BASE_URL = process.env.REACT_APP_API_URL || "/api";
 
+// Ensure the API_BASE_URL ends with /api for consistency
+const getApiBaseUrl = () => {
+	const baseUrl = process.env.REACT_APP_API_URL || "/api";
+	if (baseUrl === "/api") {
+		return baseUrl; // Development mode
+	}
+	// Production mode - ensure it ends with /api
+	return baseUrl.endsWith("/api") ? baseUrl : `${baseUrl}/api`;
+};
+
 class ApiService {
 	constructor() {
-		this.baseURL = API_BASE_URL;
+		this.baseURL = getApiBaseUrl();
 	}
 
 	// Helper method to make HTTP requests
@@ -19,13 +29,9 @@ class ApiService {
 			...options,
 		};
 
-		console.log(`API: Making request to ${url}`, config);
-
 		try {
 			const response = await fetch(url, config);
 			const data = await response.json();
-
-			console.log(`API: Response from ${url}:`, { status: response.status, data });
 
 			if (!response.ok) {
 				throw new Error(data.error || `HTTP error! status: ${response.status}`);
@@ -33,7 +39,7 @@ class ApiService {
 
 			return data;
 		} catch (error) {
-			console.error(`API: Request failed for ${url}:`, error);
+			console.error("API request failed:", error);
 			throw error;
 		}
 	}
@@ -84,25 +90,17 @@ class ApiService {
 	}
 
 	async createStudentProfile(profileData) {
-		console.log("API: Creating student profile with data:", profileData);
-		try {
-			const response = await this.request("/student-profiles", {
-				method: "POST",
-				body: JSON.stringify({
-					full_name: profileData.full_name,
-					academic_level: profileData.academic_level,
-					school_name: profileData.school_name,
-					fee_amount: profileData.fee_amount,
-					story: profileData.story,
-					profile_image: profileData.profile_image || "/api/placeholder/300/300",
-				}),
-			});
-			console.log("API: Student profile created successfully:", response);
-			return response;
-		} catch (error) {
-			console.error("API: Error creating student profile:", error);
-			throw error;
-		}
+		return this.request("/student-profiles", {
+			method: "POST",
+			body: JSON.stringify({
+				full_name: profileData.full_name,
+				academic_level: profileData.academic_level,
+				school_name: profileData.school_name,
+				fee_amount: profileData.fee_amount,
+				story: profileData.story,
+				profile_image: profileData.profile_image || "/api/placeholder/300/300",
+			}),
+		});
 	}
 
 	async updateStudentProfile(id, updates) {
@@ -113,15 +111,7 @@ class ApiService {
 	}
 
 	async getMyProfile() {
-		console.log("API: Getting my profile...");
-		try {
-			const response = await this.request("/my-profile");
-			console.log("API: My profile response:", response);
-			return response;
-		} catch (error) {
-			console.error("API: Error getting my profile:", error);
-			throw error;
-		}
+		return this.request("/my-profile");
 	}
 
 	// Donation endpoints
@@ -191,18 +181,6 @@ class ApiService {
 			method: "PATCH",
 			body: JSON.stringify({ action }),
 		});
-	}
-
-	async getStudentDonations(studentId) {
-		console.log("API: Getting donations for student:", studentId);
-		try {
-			const response = await this.request(`/student-profiles/${studentId}/donations`);
-			console.log("API: Student donations response:", response);
-			return response;
-		} catch (error) {
-			console.error("API: Error getting student donations:", error);
-			throw error;
-		}
 	}
 
 	async getAllDonations() {
