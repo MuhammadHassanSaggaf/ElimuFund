@@ -7,7 +7,7 @@ import apiService from "../services/api";
 
 const CampaignsPage = () => {
 
-	const { user } = useAuth();
+	const { user, loading: authLoading } = useAuth();
 	const [students, setStudents] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ const CampaignsPage = () => {
 						profile ? [apiService.transformStudentData(profile)] : [],
 					);
 				} else {
-					// Donors and admins see all verified students
+					// Donors, admins, and unauthenticated users see all verified students
 					const response = await apiService.getStudents(true);
 					const transformedStudents = response.students.map((student) =>
 						apiService.transformStudentData(student),
@@ -42,13 +42,13 @@ const CampaignsPage = () => {
 			}
 		};
 
-
-		if (user) {
+		// Only wait for auth loading to complete, then load students regardless of auth status
+		if (!authLoading) {
 			loadStudents();
 		}
-	}, [user]);
+	}, [user, authLoading]);
 
-	if (loading) {
+	if (authLoading || loading) {
 		return (
 			<div className="campaigns-page">
 				<div className="page-header">
@@ -97,7 +97,9 @@ const CampaignsPage = () => {
 				<p>
 					{user?.role === "student"
 						? "Track your campaign progress"
-						: "Support students in their educational journey"}
+						: user
+						? "Support students in their educational journey"
+						: "Discover and support students in their educational journey"}
 				</p>
 			</div>
 
@@ -131,7 +133,7 @@ const CampaignsPage = () => {
 							style={{ textDecoration: "none", color: "inherit" }}
 						>
 							<div className="verified-badge">
-								{student.is_verified ? "✓ Verified" : "⏳ Pending"}
+								{student.is_verified ? "✓" : "⏳"}
 							</div>
 							<div className="student-header">
 								<div className="student-avatar">
