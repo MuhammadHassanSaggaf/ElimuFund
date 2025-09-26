@@ -27,28 +27,48 @@ const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
 		...initialValues,
 	};
 
+	// Function to calculate form completion percentage
+	const calculateProgress = (values) => {
+		const requiredFields = ['full_name', 'academic_level', 'school_name', 'fee_amount', 'story'];
+		const completedFields = requiredFields.filter(field => {
+			const value = values[field];
+			if (field === 'story') {
+				return value && value.length >= 50;
+			}
+			return value && value.toString().trim() !== '';
+		});
+		return Math.round((completedFields.length / requiredFields.length) * 100);
+	};
+
 	return (
 		<div className="enhanced-form-container">
-			<div className="form-progress">
-				<div className="progress-bar">
-					<div className="progress-fill"></div>
-				</div>
-				<span className="progress-text">Complete your profile</span>
-			</div>
-
-			<div className="form-header">
-				<div className="header-icon"></div>
-				<h1>Student Profile</h1>
-				<p>Help donors understand your educational journey</p>
-			</div>
-
 			<Formik
 				initialValues={defaultValues}
 				validationSchema={validationSchema}
 				onSubmit={onSubmit}
 			>
 				{({ values, errors, touched, setFieldValue }) => {
+					const progressPercentage = calculateProgress(values);
+					
 					return (
+						<>
+							<div className="form-progress">
+								<div className="progress-bar">
+									<div 
+										className="progress-fill"
+										style={{ width: `${progressPercentage}%` }}
+									></div>
+								</div>
+								<span className="progress-text">
+									{progressPercentage === 100 ? 'Profile Complete!' : `Complete your profile (${progressPercentage}%)`}
+								</span>
+							</div>
+
+							<div className="form-header">
+								<div className="header-icon"></div>
+								<h1>Student Profile</h1>
+								<p>Help donors understand your educational journey</p>
+							</div>
 						<Form className="enhanced-form">
 							<div className="form-sections">
 								{/* Personal Information */}
@@ -184,6 +204,7 @@ const StudentDetailsForm = ({ onSubmit, initialValues = {} }) => {
 								Submit Profile
 							</button>
 						</Form>
+						</>
 					);
 				}}
 			</Formik>

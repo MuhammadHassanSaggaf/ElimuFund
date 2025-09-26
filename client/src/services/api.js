@@ -19,9 +19,13 @@ class ApiService {
 			...options,
 		};
 
+		console.log(`API: Making request to ${url}`, config);
+
 		try {
 			const response = await fetch(url, config);
 			const data = await response.json();
+
+			console.log(`API: Response from ${url}:`, { status: response.status, data });
 
 			if (!response.ok) {
 				throw new Error(data.error || `HTTP error! status: ${response.status}`);
@@ -29,7 +33,7 @@ class ApiService {
 
 			return data;
 		} catch (error) {
-			console.error("API request failed:", error);
+			console.error(`API: Request failed for ${url}:`, error);
 			throw error;
 		}
 	}
@@ -80,17 +84,25 @@ class ApiService {
 	}
 
 	async createStudentProfile(profileData) {
-		return this.request("/student-profiles", {
-			method: "POST",
-			body: JSON.stringify({
-				full_name: profileData.full_name,
-				academic_level: profileData.academic_level,
-				school_name: profileData.school_name,
-				fee_amount: profileData.fee_amount,
-				story: profileData.story,
-				profile_image: profileData.profile_image || "/api/placeholder/300/300",
-			}),
-		});
+		console.log("API: Creating student profile with data:", profileData);
+		try {
+			const response = await this.request("/student-profiles", {
+				method: "POST",
+				body: JSON.stringify({
+					full_name: profileData.full_name,
+					academic_level: profileData.academic_level,
+					school_name: profileData.school_name,
+					fee_amount: profileData.fee_amount,
+					story: profileData.story,
+					profile_image: profileData.profile_image || "/api/placeholder/300/300",
+				}),
+			});
+			console.log("API: Student profile created successfully:", response);
+			return response;
+		} catch (error) {
+			console.error("API: Error creating student profile:", error);
+			throw error;
+		}
 	}
 
 	async updateStudentProfile(id, updates) {
@@ -101,7 +113,15 @@ class ApiService {
 	}
 
 	async getMyProfile() {
-		return this.request("/my-profile");
+		console.log("API: Getting my profile...");
+		try {
+			const response = await this.request("/my-profile");
+			console.log("API: My profile response:", response);
+			return response;
+		} catch (error) {
+			console.error("API: Error getting my profile:", error);
+			throw error;
+		}
 	}
 
 	// Donation endpoints
@@ -171,6 +191,18 @@ class ApiService {
 			method: "PATCH",
 			body: JSON.stringify({ action }),
 		});
+	}
+
+	async getStudentDonations(studentId) {
+		console.log("API: Getting donations for student:", studentId);
+		try {
+			const response = await this.request(`/student-profiles/${studentId}/donations`);
+			console.log("API: Student donations response:", response);
+			return response;
+		} catch (error) {
+			console.error("API: Error getting student donations:", error);
+			throw error;
+		}
 	}
 
 	async getAllDonations() {

@@ -67,7 +67,7 @@ const TermsPage = () => {
 
               <div className="responsibility-cards">
                 <div className="responsibility-card donor">
-                  <h3>👥 For Donors</h3>
+                  <h3>For Donors</h3>
                   <ul>
                     <li>Provide accurate payment information</li>
                     <li>
@@ -80,7 +80,7 @@ const TermsPage = () => {
                 </div>
 
                 <div className="responsibility-card student">
-                  <h3>🎓 For Students</h3>
+                  <h3>For Students</h3>
                   <ul>
                     <li>Provide truthful and accurate information</li>
                     <li>
@@ -99,7 +99,7 @@ const TermsPage = () => {
               <h2>Payment Terms</h2>
               <div className="payment-info">
                 <div className="payment-card">
-                  <h4>💳 Processing</h4>
+                  <h4>Processing</h4>
                   <p>
                     All donations are processed through secure, encrypted
                     payment gateways to ensure the safety of your financial
@@ -107,7 +107,7 @@ const TermsPage = () => {
                   </p>
                 </div>
                 <div className="payment-card">
-                  <h4> Platform Fee</h4>
+                  <h4>Platform Fee</h4>
                   <p>
                     ElimuFund charges a 5% platform fee on all donations to
                     cover operational costs, payment processing, and platform
@@ -115,7 +115,7 @@ const TermsPage = () => {
                   </p>
                 </div>
                 <div className="payment-card">
-                  <h4> Security</h4>
+                  <h4>Security</h4>
                   <p>
                     We employ industry-standard security measures to protect all
                     financial transactions and personal data.
@@ -151,7 +151,7 @@ const TermsPage = () => {
         </div>
 
         <div className="terms-footer">
-          <p className="last-updated"> Last updated: September 2025</p>
+          <p className="last-updated">Last updated: September 2025</p>
           <p className="contact-info">
             Questions? Contact us at{" "}
             <a href="mailto:legal@elimufund.org">legal@elimufund.org</a>
