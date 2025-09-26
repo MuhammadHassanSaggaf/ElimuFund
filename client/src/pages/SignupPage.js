@@ -6,26 +6,18 @@ const SignupPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <div className="auth-image">
-          <img src="/api/placeholder/500/400" alt="Students graduating" />
-          <div className="auth-overlay">
-            <h2>Join ElimuFund</h2>
-            <p>
-              Be part of a community that believes in transparent education
-              funding
-            </p>
-          </div>
-        </div>
-        <div className="auth-form-container">
-          <h1>Create Your Account</h1>
+        <div className="auth-header">
+          <h1>Join ElimuFund</h1>
           <p>
-            Join us in making quality education accessible to every deserving
-            student
+            Be part of a community that believes in transparent education
+            funding
           </p>
+        </div>
+        <div className="auth-form">
           <SignupForm />
-          <p className="auth-switch">
-            Already have an account? <Link to="/login">Sign in here</Link>
-          </p>
+          <div className="auth-switch">
+            Already have an account? <Link to="/login" className="link-btn">Sign in here</Link>
+          </div>
         </div>
       </div>
     </div>

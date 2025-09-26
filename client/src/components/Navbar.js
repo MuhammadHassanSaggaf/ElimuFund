@@ -1,28 +1,35 @@
 import React from "react";
 // this is my branch
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          <span className="brand-icon">🎓</span>
+          <span className="brand-icon"></span>
           ElimuFund
         </Link>
         <div className="navbar-links">
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/campaigns" className="nav-link">
-            Campaigns
-          </Link>
           <Link to="/about" className="nav-link">
             About
           </Link>
+          <Link to="/campaigns" className="nav-link">
+            Campaigns
+          </Link>
+
           {!isAuthenticated ? (
             <>
               <Link to="/login" className="nav-link">
@@ -34,13 +41,17 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link 
-                to={user?.role === "student" ? "/student-dashboard" : "/donor-dashboard"} 
+              <Link
+                to={
+                  user?.role === "student"
+                    ? "/student-dashboard"
+                    : "/donor-dashboard"
+                }
                 className="nav-link"
               >
                 Dashboard
               </Link>
-              <button onClick={logout} className="nav-link logout-btn">
+              <button onClick={handleLogout} className="nav-link logout-btn">
                 Logout
               </button>
             </>

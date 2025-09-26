@@ -42,6 +42,8 @@ const SignupForm = () => {
 			// Navigate based on user type
 			if (values.userType === "student") {
 				navigate("/student-dashboard");
+			} else if (values.userType === "admin") {
+				navigate("/admin-dashboard");
 			} else {
 				navigate("/donor-dashboard");
 			}
@@ -55,6 +57,7 @@ const SignupForm = () => {
 			setSubmitting(false);
 		}
 	};
+
 
 	return (
 		<Formik
@@ -113,10 +116,9 @@ const SignupForm = () => {
 									/>
 									<button
 										type="button"
-										className="password-toggle"
+										className={`password-toggle ${showPassword ? 'showing' : ''}`}
 										onClick={() => setShowPassword(!showPassword)}
 									>
-										{showPassword ? "🙈" : "👁️"}
 									</button>
 								</div>
 								{meta.touched && meta.error && (
@@ -143,10 +145,9 @@ const SignupForm = () => {
 									/>
 									<button
 										type="button"
-										className="password-toggle"
+										className={`password-toggle ${showConfirmPassword ? 'showing' : ''}`}
 										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 									>
-										{showConfirmPassword ? "🙈" : "👁️"}
 									</button>
 								</div>
 								{meta.touched && meta.error && (
