@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProgressBar from "../components/ProgressBar";
 import { useAuth } from "../context/AuthContext";
+
 import apiService from "../services/api";
 
 const DonorDashboard = () => {
@@ -10,6 +11,7 @@ const DonorDashboard = () => {
 	const [allStudents, setAllStudents] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [cardsVisible, setCardsVisible] = useState(false);
 
 	useEffect(() => {
 		const loadStudents = async () => {
@@ -35,6 +37,30 @@ const DonorDashboard = () => {
 		}
 	}, [user]);
 
+	useEffect(() => {
+		const handleScroll = () => {
+			const cardsSection = document.querySelector('.donor-students-grid');
+			if (cardsSection) {
+				const rect = cardsSection.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				
+				// Trigger animation when cards section is 50% visible
+				if (rect.top <= windowHeight * 0.5 && rect.bottom >= 0) {
+					setCardsVisible(true);
+				}
+			}
+		};
+
+		// Add scroll listener
+		window.addEventListener('scroll', handleScroll);
+		
+		// Check on mount in case cards are already visible
+		handleScroll();
+
+		// Cleanup
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, [allStudents.length]);
+
 	const studentsNeedingHelp = allStudents.filter(
 		(s) => (s.amount_raised || 0) < s.fee_amount,
 	);
@@ -46,13 +72,14 @@ const DonorDashboard = () => {
 
 	if (loading) {
 		return (
-			<div className="dashboard-page">
-				<div className="dashboard-header">
+			<div className="donor-dashboard-page">
+				<div className="donor-dashboard-header">
 					<h1>Loading...</h1>
 					<p>Please wait while we fetch the latest student campaigns</p>
 				</div>
-				<div style={{ textAlign: "center", padding: "40px" }}>
-					<div className="loading-spinner">⏳</div>
+				<div className="donor-loading-container">
+					<div className="donor-loading-spinner"></div>
+					<p>Loading student campaigns...</p>
 				</div>
 			</div>
 		);
@@ -60,22 +87,15 @@ const DonorDashboard = () => {
 
 	if (error) {
 		return (
-			<div className="dashboard-page">
-				<div className="dashboard-header">
+			<div className="donor-dashboard-page">
+				<div className="donor-dashboard-header">
 					<h1>Error</h1>
 					<p>{error}</p>
 				</div>
-				<div style={{ textAlign: "center", padding: "40px" }}>
+				<div className="donor-error-container">
 					<button
 						onClick={() => window.location.reload()}
-						style={{
-							padding: "10px 20px",
-							background: "#007bff",
-							color: "white",
-							border: "none",
-							borderRadius: "5px",
-							cursor: "pointer",
-						}}
+						className="donor-error-button"
 					>
 						Try Again
 					</button>
@@ -85,36 +105,36 @@ const DonorDashboard = () => {
 	}
 
 	return (
-		<div className="dashboard-page">
-			<div className="dashboard-header">
+		<div className="donor-dashboard-page">
+			<div className="donor-dashboard-header">
 				<h1>Students Who Need Help</h1>
 				<p>Find students to support in their educational journey</p>
 			</div>
 
-			<div className="dashboard-stats">
-				<div className="stat-card">
+			<div className="donor-dashboard-stats">
+				<div className="donor-stat-card">
 					<h3>Students Needing Help</h3>
-					<p className="stat-number">{studentsNeedingHelp.length}</p>
+					<p className="donor-stat-number">{studentsNeedingHelp.length}</p>
 				</div>
-				<div className="stat-card">
+				<div className="donor-stat-card">
 					<h3>Total Students</h3>
-					<p className="stat-number">{totalStudents}</p>
+					<p className="donor-stat-number">{totalStudents}</p>
 				</div>
-				<div className="stat-card">
+				<div className="donor-stat-card">
 					<h3>Funding Needed</h3>
-					<p className="stat-number">
+					<p className="donor-stat-number">
 						KSh {totalFundingNeeded.toLocaleString()}
 					</p>
 				</div>
 			</div>
 
-			<div className="dashboard-section">
+			<div className="donor-dashboard-section">
 				<h2>Students Who Need Your Help</h2>
-				<div className="students-grid">
+				<div className={`donor-students-grid ${cardsVisible ? 'cards-visible' : ''}`}>
 					{studentsNeedingHelp.length === 0 ? (
-						<p style={{ textAlign: "center", color: "#666", padding: "40px" }}>
-							No students need help at the moment
-						</p>
+						<div className="donor-empty-state">
+							<p>No students need help at the moment</p>
+						</div>
 					) : (
 						studentsNeedingHelp.map((student) => {
 							const amountRaised = student.amount_raised || 0;
@@ -129,41 +149,41 @@ const DonorDashboard = () => {
 								<Link
 									key={student.id}
 									to={`/campaign/${student.id}`}
-									className="student-help-card"
-									style={{
-										textDecoration: "none",
-										color: "inherit",
-										display: "block",
-										margin: "20px 0",
-										padding: "20px",
-										border: "1px solid #ddd",
-										borderRadius: "10px",
-										cursor: "pointer",
-									}}
+									className="donor-student-help-card"
 								>
-									<div className="student-info">
+									<div className="donor-student-info">
 										<h4>{student.full_name}</h4>
-										<p>🏫 {student.school_name}</p>
-										<p>📚 {student.academic_level}</p>
+										<div className="donor-student-detail">
+											<span className="donor-student-detail-label">School:</span>
+											<span>{student.school_name}</span>
+										</div>
+										<div className="donor-student-detail">
+											<span className="donor-student-detail-label">Level:</span>
+											<span>{student.academic_level}</span>
+										</div>
 									</div>
-									<div className="funding-info">
-										<ProgressBar percentage={progressPercentage} />
-										<p>{progressPercentage}% funded</p>
-										<p>KSh {amountRaised.toLocaleString()} raised</p>
-										<p>Needs KSh {amountNeeded.toLocaleString()}</p>
+									<div className="donor-funding-info">
+										<div className="donor-funding-progress">
+											<ProgressBar percentage={progressPercentage} />
+										</div>
+										<div className="donor-funding-stats">
+											<div className="donor-funding-stat">
+												<div className="donor-funding-stat-label">Progress</div>
+												<div className="donor-funding-stat-value">{progressPercentage}%</div>
+											</div>
+											<div className="donor-funding-stat">
+												<div className="donor-funding-stat-label">Raised</div>
+												<div className="donor-funding-stat-value">KSh {amountRaised.toLocaleString()}</div>
+											</div>
+											<div className="donor-funding-stat">
+												<div className="donor-funding-stat-label">Needed</div>
+												<div className="donor-funding-stat-value">KSh {amountNeeded.toLocaleString()}</div>
+											</div>
+										</div>
 									</div>
-									<div
-										style={{
-											background: "#007bff",
-											color: "white",
-											padding: "10px",
-											borderRadius: "5px",
-											textAlign: "center",
-											marginTop: "10px",
-										}}
-									>
-										💰 Help {student.full_name.split(" ")[0]}
-									</div>
+									<button className="donor-help-button">
+										Help {student.full_name.split(" ")[0]}
+									</button>
 								</Link>
 							);
 						})
@@ -172,6 +192,7 @@ const DonorDashboard = () => {
 			</div>
 		</div>
 	);
+
 };
 
 export default DonorDashboard;

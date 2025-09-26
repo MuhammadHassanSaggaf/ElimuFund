@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import apiService from "../services/api";
@@ -6,8 +6,33 @@ import apiService from "../services/api";
 const DonationForm = ({ student }) => {
 	const [donationSuccess, setDonationSuccess] = useState(false);
 	const [showTransferModal, setShowTransferModal] = useState(false);
-	const [availableStudents] = useState([]);
-	const [excessAmount] = useState(0);
+	const [availableStudents, setAvailableStudents] = useState([]);
+	const [excessAmount, setExcessAmount] = useState(0);
+	const [loading, setLoading] = useState(false);
+
+	// Load available students for transfer when goal is reached
+	useEffect(() => {
+		const loadAvailableStudents = async () => {
+			if (student?.amount_raised >= student?.fee_amount) {
+				try {
+					const response = await apiService.getStudents(true);
+					const transformedStudents = response.students.map((s) =>
+						apiService.transformStudentData(s)
+					);
+					// Filter out current student and only show those who need funding
+					const available = transformedStudents.filter(
+						(s) => s.id !== student.id && (s.amount_raised || 0) < s.fee_amount
+					);
+					setAvailableStudents(available);
+				} catch (error) {
+					console.error("Error loading students for transfer:", error);
+					setAvailableStudents([]);
+				}
+			}
+		};
+
+		loadAvailableStudents();
+	}, [student]);
 
 	const validationSchema = Yup.object({
 		amount: Yup.number()
@@ -32,6 +57,7 @@ const DonationForm = ({ student }) => {
 
 	const handleSubmit = async (values) => {
 		try {
+			setLoading(true);
 			const donationAmount = Number(values.amount);
 
 			// Call API to create donation
@@ -43,45 +69,63 @@ const DonationForm = ({ student }) => {
 				paymentMethod: values.paymentMethod || "mpesa",
 			});
 
-			setDonationSuccess(true);
+			// Check if this donation would exceed the goal
+			const newTotal = (student.amount_raised || 0) + donationAmount;
+			const goalAmount = student.fee_amount;
 
-			// Refresh the page to show updated amounts
+			if (newTotal > goalAmount) {
+				// Goal exceeded - show transfer option
+				const excess = newTotal - goalAmount;
+				setExcessAmount(excess);
+				setShowTransferModal(true);
+			} else {
+				// Goal not exceeded - show success
+				setDonationSuccess(true);
+			}
+
+			// Refresh the page to show updated amounts after a delay
 			setTimeout(() => {
 				window.location.reload();
 			}, 3000);
 		} catch (error) {
 			console.error("Donation failed:", error);
 			alert("Donation failed: " + error.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
-	const handleTransfer = (selectedStudent) => {
-		// Update the recipient student's data
-		const allStudents = JSON.parse(localStorage.getItem("students") || "[]");
-		const updatedStudents = allStudents.map((s) =>
-			s.id === selectedStudent.id
-				? { ...s, amount_raised: (s.amount_raised || 0) + excessAmount }
-				: s,
-		);
-		localStorage.setItem("students", JSON.stringify(updatedStudents));
+	const handleTransfer = async (selectedStudent) => {
+		try {
+			setLoading(true);
+			
+			// Create a donation for the selected student with the excess amount
+			await apiService.createDonation({
+				student_id: selectedStudent.id,
+				amount: excessAmount,
+				anonymous: false, // Transfer donations are not anonymous
+				message: `Transferred from ${student.full_name}'s campaign`,
+				paymentMethod: "transfer",
+			});
 
-		const storedDummy = JSON.parse(
-			localStorage.getItem("dummyStudents") || "[]",
-		);
-		const updatedDummy = storedDummy.map((s) =>
-			s.id === selectedStudent.id
-				? { ...s, amount_raised: (s.amount_raised || 0) + excessAmount }
-				: s,
-		);
-		localStorage.setItem("dummyStudents", JSON.stringify(updatedDummy));
+			setShowTransferModal(false);
+			setDonationSuccess(true);
+			alert(
+				`KSh ${excessAmount.toLocaleString()} has been transferred to help ${
+					selectedStudent.full_name
+				}!`
+			);
 
-		setShowTransferModal(false);
-		setDonationSuccess(true);
-		alert(
-			`KSh ${excessAmount.toLocaleString()} has been transferred to help ${
-				selectedStudent.full_name
-			}!`,
-		);
+			// Refresh the page to show updated amounts
+			setTimeout(() => {
+				window.location.reload();
+			}, 2000);
+		} catch (error) {
+			console.error("Transfer failed:", error);
+			alert("Transfer failed: " + error.message);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const skipTransfer = () => {
@@ -93,12 +137,6 @@ const DonationForm = ({ student }) => {
 
 	// If goal already reached, show transfer interface directly
 	if (isGoalReached && !showTransferModal) {
-		const otherStudents = JSON.parse(localStorage.getItem("students") || "[]")
-			.concat(JSON.parse(localStorage.getItem("dummyStudents") || "[]"))
-			.filter(
-				(s) => s.id !== student.id && (s.amount_raised || 0) < s.fee_amount,
-			);
-
 		return (
 			<div className="transfer-interface">
 				<div className="goal-achieved-header">
@@ -110,7 +148,7 @@ const DonationForm = ({ student }) => {
 					<p>Choose a student to transfer funds to:</p>
 				</div>
 				<div className="student-list">
-					{otherStudents.map((s) => {
+					{availableStudents.map((s) => {
 						const remaining = s.fee_amount - (s.amount_raised || 0);
 						return (
 							<div
@@ -122,61 +160,27 @@ const DonationForm = ({ student }) => {
 										"1000",
 									);
 									if (transferAmount && Number(transferAmount) > 0) {
-										// Update both sender (reset to goal) and recipient (add funds)
-										const allStudents = JSON.parse(
-											localStorage.getItem("students") || "[]",
-										);
-										const updatedStudents = allStudents.map((st) => {
-											if (st.id === student.id) {
-												// Reset sender to exactly their goal amount
-												return { ...st, amount_raised: st.fee_amount };
-											} else if (st.id === s.id) {
-												// Add to recipient
-												return {
-													...st,
-													amount_raised:
-														(st.amount_raised || 0) + Number(transferAmount),
-												};
-											}
-											return st;
+										// Create a donation for the selected student
+										apiService.createDonation({
+											student_id: s.id,
+											amount: Number(transferAmount),
+											anonymous: false,
+											message: `Transferred from ${student.full_name}'s campaign`,
+											paymentMethod: "transfer",
+										}).then(() => {
+											alert(
+												`KSh ${Number(
+													transferAmount,
+												).toLocaleString()} transferred to ${s.full_name}!`
+											);
+											// Force page refresh to show changes
+											setTimeout(() => {
+												window.location.reload();
+											}, 1000);
+										}).catch((error) => {
+											console.error("Transfer failed:", error);
+											alert("Transfer failed: " + error.message);
 										});
-										localStorage.setItem(
-											"students",
-											JSON.stringify(updatedStudents),
-										);
-
-										const dummyStudents = JSON.parse(
-											localStorage.getItem("dummyStudents") || "[]",
-										);
-										const updatedDummy = dummyStudents.map((st) => {
-											if (st.id === student.id) {
-												// Reset sender to exactly their goal amount
-												return { ...st, amount_raised: st.fee_amount };
-											} else if (st.id === s.id) {
-												// Add to recipient
-												return {
-													...st,
-													amount_raised:
-														(st.amount_raised || 0) + Number(transferAmount),
-												};
-											}
-											return st;
-										});
-										localStorage.setItem(
-											"dummyStudents",
-											JSON.stringify(updatedDummy),
-										);
-
-										alert(
-											`KSh ${Number(
-												transferAmount,
-											).toLocaleString()} transferred to ${s.full_name}!`,
-										);
-
-										// Force page refresh to show changes
-										setTimeout(() => {
-											window.location.reload();
-										}, 1000);
 									}
 								}}
 							>
@@ -479,6 +483,7 @@ const DonationForm = ({ student }) => {
 								type="submit"
 								className="premium-donate-btn"
 								disabled={
+									loading ||
 									!values.amount ||
 									(values.paymentMethod === "mpesa" && !values.phoneNumber) ||
 									(values.paymentMethod === "bank" && !values.selectedBank)
@@ -486,8 +491,9 @@ const DonationForm = ({ student }) => {
 							>
 								<span className="btn-icon"></span>
 								<span>
-									Donate KSh{" "}
-									{values.amount ? Number(values.amount).toLocaleString() : "0"}
+									{loading ? "Processing..." : `Donate KSh ${
+										values.amount ? Number(values.amount).toLocaleString() : "0"
+									}`}
 								</span>
 							</button>
 

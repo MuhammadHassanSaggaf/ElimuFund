@@ -85,10 +85,9 @@ const LoginForm = () => {
 										/>
 										<button
 											type="button"
-											className="password-toggle"
+											className={`password-toggle ${showPassword ? 'showing' : ''}`}
 											onClick={() => setShowPassword(!showPassword)}
 										>
-											{showPassword ? "🙈" : "👁️"}
 										</button>
 									</div>
 									{meta.touched && meta.error && (
