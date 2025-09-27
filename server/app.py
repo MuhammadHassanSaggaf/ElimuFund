@@ -70,7 +70,11 @@ def create_app():
     # Debug users route
     @app.route('/api/debug-users')
     def debug_users():
-        from .models import User
+        try:
+            from .models import User
+        except ImportError:
+            from models import User
+        
         users = User.query.all()
         return {
             'users': [{
