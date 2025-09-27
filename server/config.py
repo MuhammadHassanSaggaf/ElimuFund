@@ -10,8 +10,14 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-123'
     
     # Database config
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'elimufund.db')
+    # Use PostgreSQL for production, SQLite for development
+    if os.environ.get('DATABASE_URL'):
+        # Production: Use PostgreSQL from environment variable
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    else:
+        # Development: Use SQLite
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'elimufund.db')
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session config
