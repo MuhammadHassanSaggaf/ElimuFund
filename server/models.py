@@ -20,9 +20,9 @@ class User(db.Model, SerializerMixin):
     
     # Columns
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    _password_hash = db.Column(db.String(128), nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    _password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.Enum('admin', 'donor', 'student', name='user_roles'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
