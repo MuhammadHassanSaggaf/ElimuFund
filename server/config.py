@@ -14,9 +14,11 @@ class Config:
     if os.environ.get('DATABASE_URL'):
         # Production: Use PostgreSQL from environment variable
         SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+        print(f"🔗 Using PostgreSQL database: {SQLALCHEMY_DATABASE_URI[:20]}...")
     else:
         # Development: Use SQLite
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'elimufund.db')
+        print(f"🔗 Using SQLite database: {SQLALCHEMY_DATABASE_URI}")
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
