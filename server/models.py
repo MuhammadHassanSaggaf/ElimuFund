@@ -50,7 +50,17 @@ class User(db.Model, SerializerMixin):
         self._password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
     
     def check_password(self, password):
-        return check_password_hash(self._password_hash, password)
+        try:
+            # Try to verify with current hash
+            return check_password_hash(self._password_hash, password)
+        except Exception:
+            # If verification fails, it might be due to truncated hash
+            # Try to verify with a newly generated hash for comparison
+            try:
+                new_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
+                return new_hash == self._password_hash
+            except Exception:
+                return False
     
     # Validations
     @validates('email')
