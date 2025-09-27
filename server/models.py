@@ -46,9 +46,8 @@ class User(db.Model, SerializerMixin):
     
     @password.setter
     def password(self, password):
-        # Generate hash and truncate to fit database column (128 chars)
-        hash_value = generate_password_hash(password)
-        self._password_hash = hash_value[:128] if len(hash_value) > 128 else hash_value
+        # Use a shorter hash method that fits in 128 characters
+        self._password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
     
     def check_password(self, password):
         return check_password_hash(self._password_hash, password)
