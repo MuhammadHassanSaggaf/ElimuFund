@@ -18,8 +18,11 @@ def signup():
             return jsonify({'error': 'Email already registered'}), 400
         
         # Create new user
+        # Truncate username to fit database column (80 chars max for now)
+        username = data['fullName'][:80] if len(data['fullName']) > 80 else data['fullName']
+        
         new_user = User(
-            username=data['fullName'],
+            username=username,
             email=data['email'],
             role=data['userType']
         )
