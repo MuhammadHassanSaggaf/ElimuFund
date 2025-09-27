@@ -13,7 +13,11 @@ class Config:
     # Use PostgreSQL for production, SQLite for development
     if os.environ.get('DATABASE_URL'):
         # Production: Use PostgreSQL from environment variable
-        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+        # Convert postgresql:// to postgresql+psycopg:// for psycopg3 compatibility
+        database_url = os.environ.get('DATABASE_URL')
+        if database_url.startswith('postgresql://'):
+            database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
+        SQLALCHEMY_DATABASE_URI = database_url
         print(f"🔗 Using PostgreSQL database: {SQLALCHEMY_DATABASE_URI[:20]}...")
     else:
         # Development: Use SQLite
