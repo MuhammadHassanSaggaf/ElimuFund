@@ -63,7 +63,10 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     with app.app_context():
-        db.create_all()  # Create tables if they don't exist
+        # Initialize database tables
+        print("🔧 Initializing database...")
+        db.create_all()
+        print("✅ Database initialized successfully!")
     
     # Get port from environment variable (for deployment) or default to 5000
     port = int(os.environ.get('PORT', 5000))
