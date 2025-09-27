@@ -67,6 +67,21 @@ def create_app():
             'user_role': session.get('user_role')
         }, 200
     
+    # Debug users route
+    @app.route('/api/debug-users')
+    def debug_users():
+        from .models import User
+        users = User.query.all()
+        return {
+            'users': [{
+                'id': u.id,
+                'username': u.username,
+                'email': u.email,
+                'role': u.role,
+                'password_hash_length': len(u._password_hash) if u._password_hash else 0
+            } for u in users]
+        }, 200
+    
     # Database update route (for fixing schema issues)
     @app.route('/api/update-db', methods=['POST'])
     def update_database():
