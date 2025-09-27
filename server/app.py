@@ -58,6 +58,28 @@ def create_app():
     def test():
         return {'message': 'Backend is connected!'}, 200
     
+    # Debug session route
+    @app.route('/api/debug-session')
+    def debug_session():
+        return {
+            'session_data': dict(session),
+            'user_id': session.get('user_id'),
+            'user_role': session.get('user_role')
+        }, 200
+    
+    # Database update route (for fixing schema issues)
+    @app.route('/api/update-db', methods=['POST'])
+    def update_database():
+        try:
+            from .update_database import update_database_schema
+            success = update_database_schema()
+            if success:
+                return {'message': 'Database schema updated successfully!'}, 200
+            else:
+                return {'error': 'Database schema update failed'}, 500
+        except Exception as e:
+            return {'error': str(e)}, 500
+    
     return app
 
 if __name__ == '__main__':

@@ -29,6 +29,14 @@ class Config:
     # Session config
     SESSION_TYPE = 'filesystem'
     PERMANENT_SESSION_LIFETIME = 86400 
-    # Dev cookie settings for cross-site (proxy preferred, but safe to keep)
-    SESSION_COOKIE_SAMESITE = 'Lax'
-    SESSION_COOKIE_SECURE = False
+    
+    # Production session settings
+    if os.environ.get('DATABASE_URL'):
+        # Production: Secure session cookies
+        SESSION_COOKIE_SAMESITE = 'None'
+        SESSION_COOKIE_SECURE = True
+        SESSION_COOKIE_HTTPONLY = True
+    else:
+        # Development: Relaxed session cookies
+        SESSION_COOKIE_SAMESITE = 'Lax'
+        SESSION_COOKIE_SECURE = False
